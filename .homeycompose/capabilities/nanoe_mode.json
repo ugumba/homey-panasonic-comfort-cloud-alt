@@ -1,0 +1,29 @@
+{
+    "type": "enum",
+    "title": { "en": "Nanoe Mode" },
+    "uiComponent": "picker",
+    "getable": true,
+    "setable": true,
+    "values": [
+        {
+            "id": "0",
+            "title": { "en": "Unavailable"}
+        },
+        {
+            "id": "1",
+            "title": { "en": "Off"}
+        },
+        {
+            "id": "2",
+            "title": { "en": "On"}
+        },
+        {
+            "id": "3",
+            "title": { "en": "ModeG"}
+        },
+        {
+            "id": "4",
+            "title": { "en": "All"}
+        }
+    ]
+  }

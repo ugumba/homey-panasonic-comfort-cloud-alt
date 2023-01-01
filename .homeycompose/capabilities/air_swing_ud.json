@@ -1,0 +1,29 @@
+{
+    "type": "enum",
+    "title": { "en": "Air Swing UD" },
+    "uiComponent": "picker",
+    "getable": true,
+    "setable": true,
+    "values": [
+        {
+            "id": "0",
+            "title": { "en": "Up"}
+        },
+        {
+            "id": "3",
+            "title": { "en": "UpMid"}
+        },
+        {
+            "id": "2",
+            "title": { "en": "Mid"}
+        },
+        {
+            "id": "4",
+            "title": { "en": "DownMid"}
+        },
+        {
+            "id": "1",
+            "title": { "en": "Down"}
+        }
+    ]
+  }

@@ -1,0 +1,31 @@
+{
+  "id": "net.schmidt-cisternas.pcc-alt",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Panasonic Comfort Cloud Alternative"
+  },
+  "description": {
+    "en": "Supports some Panasonic AC devices."
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Robert Schmidt",
+    "email": "robert@schmidt-cisternas.net"
+  },
+  "contributors": {
+    "developers": []
+  }
+}

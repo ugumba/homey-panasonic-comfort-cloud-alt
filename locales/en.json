@@ -1,0 +1,6 @@
+{
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Please provide credentials for Panasonic Comfort Cloud.  These should be different from what you normally use in the PCC Android/iPhone app, but must have permissions to control your device(s)."
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "extends": "athom",
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
+}

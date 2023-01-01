@@ -1,0 +1,354 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "net.schmidt-cisternas.pcc-alt",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Panasonic Comfort Cloud Alternative"
+  },
+  "description": {
+    "en": "Supports some Panasonic AC devices."
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Robert Schmidt",
+    "email": "robert@schmidt-cisternas.net"
+  },
+  "contributors": {
+    "developers": []
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "AirCon"
+      },
+      "class": "fan",
+      "capabilities": [
+        "target_temperature",
+        "measure_temperature",
+        "onoff",
+        "operation_mode",
+        "eco_mode",
+        "fan_auto_mode",
+        "fan_speed",
+        "air_swing_lr",
+        "air_swing_ud",
+        "nanoe_mode"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/aircon/assets/images/small.png",
+        "large": "/drivers/aircon/assets/images/large.png",
+        "xlarge": "/drivers/aircon/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_my_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_my_devices"
+          }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "aircon"
+    }
+  ],
+  "capabilities": {
+    "air_swing_lr": {
+      "type": "enum",
+      "title": {
+        "en": "Air Swing LR"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Left"
+          }
+        },
+        {
+          "id": "4",
+          "title": {
+            "en": "LeftMid"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Mid"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "RightMid"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Right"
+          }
+        }
+      ]
+    },
+    "air_swing_ud": {
+      "type": "enum",
+      "title": {
+        "en": "Air Swing UD"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Up"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "UpMid"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Mid"
+          }
+        },
+        {
+          "id": "4",
+          "title": {
+            "en": "DownMid"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Down"
+          }
+        }
+      ]
+    },
+    "eco_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Eco Mode"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Auto"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Powerful"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Quiet"
+          }
+        }
+      ]
+    },
+    "fan_auto_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Fan Auto Mode"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "1",
+          "title": {
+            "en": "Disabled"
+          }
+        },
+        {
+          "id": "0",
+          "title": {
+            "en": "AirSwingAuto"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "AitSwingLR"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "AirSwingUD"
+          }
+        }
+      ]
+    },
+    "fan_speed": {
+      "type": "enum",
+      "title": {
+        "en": "Fan Speed"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Auto"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Low"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "LowMid"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "Mid"
+          }
+        },
+        {
+          "id": "4",
+          "title": {
+            "en": "HighMid"
+          }
+        },
+        {
+          "id": "5",
+          "title": {
+            "en": "High"
+          }
+        }
+      ]
+    },
+    "nanoe_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Nanoe Mode"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Unavailable"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "On"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "ModeG"
+          }
+        },
+        {
+          "id": "4",
+          "title": {
+            "en": "All"
+          }
+        }
+      ]
+    },
+    "operation_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Operation Mode"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Auto"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Dry"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Cool"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "Heat"
+          }
+        },
+        {
+          "id": "4",
+          "title": {
+            "en": "Fan"
+          }
+        }
+      ]
+    }
+  }
+}

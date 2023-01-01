@@ -1,0 +1,25 @@
+{
+    "type": "enum",
+    "title": { "en": "Fan Auto Mode" },
+    "uiComponent": "picker",
+    "getable": true,
+    "setable": true,
+    "values": [
+        {
+            "id": "1",
+            "title": { "en": "Disabled"}
+        },
+        {
+            "id": "0",
+            "title": { "en": "AirSwingAuto"}
+        },
+        {
+            "id": "3",
+            "title": { "en": "AitSwingLR"}
+        },
+        {
+            "id": "2",
+            "title": { "en": "AirSwingUD"}
+        }
+    ]
+  }

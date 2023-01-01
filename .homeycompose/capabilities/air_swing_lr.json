@@ -1,0 +1,29 @@
+{
+    "type": "enum",
+    "title": { "en": "Air Swing LR" },
+    "uiComponent": "picker",
+    "getable": true,
+    "setable": true,
+    "values": [
+        {
+            "id": "0",
+            "title": { "en": "Left"}
+        },
+        {
+            "id": "4",
+            "title": { "en": "LeftMid"}
+        },
+        {
+            "id": "2",
+            "title": { "en": "Mid"}
+        },
+        {
+            "id": "3",
+            "title": { "en": "RightMid"}
+        },
+        {
+            "id": "1",
+            "title": { "en": "Right"}
+        }
+    ]
+  }

@@ -1,0 +1,40 @@
+{
+  "name": {
+    "en": "AirCon"
+  },
+  "class": "fan",
+  "capabilities": [
+    "target_temperature",
+    "measure_temperature",
+    "onoff",
+    "operation_mode",
+    "eco_mode",
+    "fan_auto_mode",
+    "fan_speed",
+    "air_swing_lr",
+    "air_swing_ud",
+    "nanoe_mode"
+  ],
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "list_my_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_my_devices" }
+    },
+    {
+      "id": "add_my_devices",
+      "template": "add_devices"
+    }
+  ]
+}
