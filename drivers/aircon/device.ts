@@ -1,6 +1,6 @@
 import Homey from 'homey';
 import { MyDriver } from './driver';
-import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode } from 'panasonic-comfort-cloud-client';
+import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device } from 'panasonic-comfort-cloud-client';
 
 function getParam(value:any, transform: (v:any) => any) : any {
   if (value === undefined)
@@ -8,7 +8,7 @@ function getParam(value:any, transform: (v:any) => any) : any {
   return transform(value);
 }
 
-class MyDevice extends Homey.Device {
+export class MyDevice extends Homey.Device {
 
   id: string = this.getData().id;
   driver: MyDriver = this.driver as MyDriver;
@@ -18,18 +18,27 @@ class MyDevice extends Homey.Device {
     let current = this.getCapabilityValue(name);
     if (value == current)
       return;
-    this.log("setCap("+name+"):", value, "(was", current,")");
+    this.log("  setCap("+name+"):", value, "(was", current,")");
     await this.setCapabilityValue(name, value);
   }
   
-  async updateCapabilitiesFromClient(forced:boolean) {
-    this.log("updateFromClient("+forced+")");
-    let device = await this.driver.invokeClient(c => c.getDevice(this.id));
-    if (!device)
-    {
-      this.log("getDevice() == null");
-      return;
+  async fetchFromService(forced:boolean) {
+    this.log("fetchFromService("+forced+")");
+    let device:Device|null;
+    try {
+      device = await this.driver.invokeClient(c => c.getDevice(this.id));
+      //TODO: the mock device throws 403 above
+      if (!device)
+        throw new Error("Device "+this.id+" not found.");
     }
+    catch (e) {
+      this.error("  getDevice failed:", e);
+      if (e instanceof Error)
+        await this.setWarning(e.message);
+      throw e;
+    }
+    await this.unsetWarning();
+
     await this.setCap('onoff', device.operate == Power.On);
     await this.setCap('measure_temperature', device.insideTemperature);
     await this.setCap('target_temperature', device.temperatureSet);
@@ -42,15 +51,15 @@ class MyDevice extends Homey.Device {
     await this.setCap('nanoe_mode', NanoeMode[device.nanoe]);
   }
 
-  async updateAndRestartTimer() {
+  async fetchAndRestartTimer() {
     if (this.timer)
       clearInterval(this.timer);
-    await this.updateCapabilitiesFromClient(true);
-    this.timer = setInterval(() => this.updateCapabilitiesFromClient(false), 60000);
+    await this.fetchFromService(true);
+    this.timer = setInterval(() => this.fetchFromService(false), 60000);
   }
 
-  async setParametersFromCapabilityValues(values: {[x:string]:any}) {
-    this.log('changing:', values);
+  async postToService(values: {[x:string]:any}) {
+    this.log('postToService:', values);
     let params : Parameters = { 
       operate: getParam(values['onoff'], v => v ? Power.On : Power.Off), 
       temperatureSet: values['target_temperature'],
@@ -62,17 +71,22 @@ class MyDevice extends Homey.Device {
       fanSpeed: getParam(values['fan_speed'], v => FanSpeed[v]),
       actualNanoe: getParam(values['nanoe_mode'], v => NanoeMode[v])
     };
-    this.log('setParameters:', params);
-    await this.driver.invokeClient(c => c.setParameters(this.id, params));
-    await this.updateAndRestartTimer();
+    try {
+      await this.driver.invokeClient(c => c.setParameters(this.id, params));
+    }
+    catch (e) {
+      this.error("  setParameters failed:", e);
+      if (e instanceof Error)
+        await this.setWarning(e.message);
+      throw e;
+    }
+    await this.fetchAndRestartTimer();
   }
 
   /**
    * onInit is called when the device is initialized.
    */
   async onInit() {
-
-    await this.updateAndRestartTimer();
 
     this.registerMultipleCapabilityListener(
       [
@@ -86,18 +100,28 @@ class MyDevice extends Homey.Device {
         'fan_speed',
         'nanoe_mode'
       ],
-      values => this.setParametersFromCapabilityValues(values),
+      values => this.postToService(values),
       3000
     );
 
-    this.log('MyDevice has been initialized');
+    try {
+      await this.fetchAndRestartTimer();
+    }
+    catch (e) {
+      if (e instanceof Error)
+        await this.setWarning(e.message);
+      else 
+        throw e;
+    }
+
+    this.log('Device has been initialized');
   }
 
   /**
    * onAdded is called when the user adds the device, called just after pairing.
    */
   async onAdded() {
-    this.log('MyDevice has been added');
+    this.log('Device has been added');
   }
 
   /**
@@ -109,7 +133,7 @@ class MyDevice extends Homey.Device {
    * @returns {Promise<string|void>} return a custom message that will be displayed
    */
   async onSettings({ oldSettings: {}, newSettings: {}, changedKeys: [] }): Promise<string|void> {
-    this.log('MyDevice settings where changed');
+    this.log('Device settings where changed');
   }
 
   /**
@@ -118,14 +142,16 @@ class MyDevice extends Homey.Device {
    * @param {string} name The new name
    */
   async onRenamed(name: string) {
-    this.log('MyDevice was renamed');
+    this.log('Device was renamed');
   }
 
   /**
    * onDeleted is called when the user deleted the device.
    */
   async onDeleted() {
-    this.log('MyDevice has been deleted');
+    if (this.timer)
+      clearInterval(this.timer);
+    this.log('Device has been deleted');
   }
 
 }

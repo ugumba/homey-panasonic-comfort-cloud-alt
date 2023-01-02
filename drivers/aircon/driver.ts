@@ -1,31 +1,47 @@
 import Homey from 'homey';
 import { ComfortCloudClient, TokenExpiredError } from 'panasonic-comfort-cloud-client';
+import { MyDevice } from './device';
 
 export class MyDriver extends Homey.Driver {
 
-  client: ComfortCloudClient | null = null;
+  client: ComfortCloudClient | null | undefined = undefined;
+  ignoreSettings:boolean=false;
 
   async getClient() : Promise<ComfortCloudClient> {
-    if (!this.client)
+    if (this.client === undefined)
     {
       this.log('initializing client');
       this.client = new ComfortCloudClient();
       let token:string = this.homey.settings.get("token");
       if (!token || token.length == 0)
       {
-        this.log('missing token');
+        this.log('  missing token');
         const username = this.homey.settings.get("username");
         const password = this.homey.settings.get("password");
         if (!username || !password)
-          throw 'missing credentials';
-        this.log('authenticating as '+username);
-        token = await this.client.login(username, password);
-        this.homey.settings.set("token", token);
-        this.log('saved token');
+        {
+          this.client = null;
+          throw new Error('Provide credentials in app settings.');
+        }
+        this.log('  authenticating '+username);
+        try {
+          token = await this.client.login(username, password);
+          this.saveToken(token);
+          this.log('  saved token');
+        }
+        catch (e) {
+          this.error('  login failed:', e);
+          this.client = null; 
+        }
       }
       else {
         this.client.token = token;
+        this.log('  loaded token');
       }
+    }
+    if (this.client === null)
+    {
+      throw new Error('Authentication failed, edit credentials in app settings.');
     }
 
     return this.client;
@@ -46,7 +62,6 @@ export class MyDriver extends Homey.Driver {
         }
         else
         {
-          this.log('invokeClient exception:', e);
           throw e;
         }
       }
@@ -55,8 +70,17 @@ export class MyDriver extends Homey.Driver {
 
   resetClient() {
     this.log('resetClient');
-    this.client = null;
-    this.homey.settings.set("token", null);
+    this.client = undefined;
+    this.saveToken(null);
+
+    this.getDevices()
+      .forEach(device => (device as MyDevice).fetchAndRestartTimer());
+  }
+
+  saveToken(token:string|null) {
+    this.ignoreSettings=true;
+    this.homey.settings.set("token", token);
+    this.ignoreSettings=false;
   }
 
   /**
@@ -64,16 +88,20 @@ export class MyDriver extends Homey.Driver {
    */
   async onInit() {
 
-    this.homey.on('settings.set', () => {
+    this.homey.settings.on('set', () => {
+      if (this.ignoreSettings)
+        return;
       this.log('settings.set');
       this.resetClient();
     });
-    this.homey.on('settings.unset', () => {
+    this.homey.settings.on('unset', () => {
+      if (this.ignoreSettings)
+        return;
       this.log('settings.unset');
       this.resetClient();
     });
 
-    this.log('MyDriver has been initialized');
+    this.log('Driver has been initialized');
   }
 
   /**
@@ -82,13 +110,27 @@ export class MyDriver extends Homey.Driver {
    */
   async onPairListDevices() {
     this.log('onPairListDevices');
-    return (await this.invokeClient(c => c.getGroups()))
+
+    let devices = (await this.invokeClient(c => c.getGroups()))
       .flatMap(group => group.devices.map(device => ({
         name: group.name + ": " + device.name,
         data: {
           id: device.guid
         }
       })));
+
+    if (process.env.DEBUG === "1")
+      devices = devices
+        .concat([
+          {
+            name: "Mock group: Mock device",
+            data: {
+              id: "deadbeef"
+            }
+          }
+        ]);
+
+    return devices;
   }
 
 }
