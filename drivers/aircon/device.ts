@@ -1,9 +1,8 @@
 import Homey from 'homey';
 import { MyDriver } from './driver';
-import { ComfortCloudClient, Power, Parameters } from 'panasonic-comfort-cloud-client';
+import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode } from 'panasonic-comfort-cloud-client';
 
-function getParam(value:any, transform: (v:any) => any) : any
-{
+function getParam(value:any, transform: (v:any) => any) : any {
   if (value === undefined)
     return undefined;
   return transform(value);
@@ -12,43 +11,66 @@ function getParam(value:any, transform: (v:any) => any) : any
 class MyDevice extends Homey.Device {
 
   id: string = this.getData().id;
-  client: ComfortCloudClient | null = null;
-  timer: any = null; 
+  driver: MyDriver = this.driver as MyDriver;
+  timer: NodeJS.Timer|null = null; 
 
-  async updateFromClient() {
-    let device = await this.client?.getDevice(this.id);
-    if (device)
+  async setCap<T>(name:string, value:T) {
+    let current = this.getCapabilityValue(name);
+    if (value == current)
+      return;
+    this.log("setCap("+name+"):", value, "(was", current,")");
+    await this.setCapabilityValue(name, value);
+  }
+  
+  async updateCapabilitiesFromClient(forced:boolean) {
+    this.log("updateFromClient("+forced+")");
+    let device = await this.driver.invokeClient(c => c.getDevice(this.id));
+    if (!device)
     {
-      this.log("updateFromClient:", device);
-      await this.setCapabilityValue('onoff', device.operate == 1);
-      await this.setCapabilityValue('measure_temperature', device.insideTemperature);
-      await this.setCapabilityValue('target_temperature', device.temperatureSet);
-      await this.setCapabilityValue('operation_mode', device.operationMode.toString());
-      await this.setCapabilityValue('eco_mode', device.ecoMode.toString());
-      await this.setCapabilityValue('air_swing_lr', device.airSwingLR.toString());
-      await this.setCapabilityValue('air_swing_ud', device.airSwingUD.toString());
-      await this.setCapabilityValue('fan_auto_mode', device.fanAutoMode.toString());
-      await this.setCapabilityValue('fan_speed', device.fanSpeed.toString());
-      await this.setCapabilityValue('nanoe_mode', device.nanoe.toString());
-    }
-    else
       this.log("getDevice() == null");
+      return;
+    }
+    await this.setCap('onoff', device.operate == Power.On);
+    await this.setCap('measure_temperature', device.insideTemperature);
+    await this.setCap('target_temperature', device.temperatureSet);
+    await this.setCap('operation_mode', OperationMode[device.operationMode]);
+    await this.setCap('eco_mode', EcoMode[device.ecoMode]);
+    await this.setCap('air_swing_lr', AirSwingLR[device.airSwingLR]);
+    await this.setCap('air_swing_ud', AirSwingUD[device.airSwingUD]);
+    await this.setCap('fan_auto_mode', FanAutoMode[device.fanAutoMode]);
+    await this.setCap('fan_speed', FanSpeed[device.fanSpeed]);
+    await this.setCap('nanoe_mode', NanoeMode[device.nanoe]);
   }
 
-  async updateAndRestartTimer()
-  {
+  async updateAndRestartTimer() {
     if (this.timer)
       clearInterval(this.timer);
-    await this.updateFromClient();
-    this.timer = setInterval(() => this.updateFromClient(), 60000);
+    await this.updateCapabilitiesFromClient(true);
+    this.timer = setInterval(() => this.updateCapabilitiesFromClient(false), 60000);
+  }
+
+  async setParametersFromCapabilityValues(values: {[x:string]:any}) {
+    this.log('changing:', values);
+    let params : Parameters = { 
+      operate: getParam(values['onoff'], v => v ? Power.On : Power.Off), 
+      temperatureSet: values['target_temperature'],
+      operationMode: getParam(values['operation_mode'], v => OperationMode[v]),
+      ecoMode: getParam(values['eco_mode'], v => EcoMode[v]),
+      airSwingLR: getParam(values['air_swing_lr'], v => AirSwingLR[v]),
+      airSwingUD: getParam(values['air_swing_ud'], v => AirSwingUD[v]),
+      fanAutoMode: getParam(values['fan_auto_mode'], v => FanAutoMode[v]),
+      fanSpeed: getParam(values['fan_speed'], v => FanSpeed[v]),
+      actualNanoe: getParam(values['nanoe_mode'], v => NanoeMode[v])
+    };
+    this.log('setParameters:', params);
+    await this.driver.invokeClient(c => c.setParameters(this.id, params));
+    await this.updateAndRestartTimer();
   }
 
   /**
    * onInit is called when the device is initialized.
    */
   async onInit() {
-
-    this.client = await (this.driver as MyDriver).getClient();
 
     await this.updateAndRestartTimer();
 
@@ -64,23 +86,7 @@ class MyDevice extends Homey.Device {
         'fan_speed',
         'nanoe_mode'
       ],
-      async (values) => {
-        this.log('changing:', values);
-        let params : Parameters = { 
-          operate: getParam(values['onoff'], v => v ? Power.On : Power.Off), 
-          temperatureSet: values['target_temperature'],
-          operationMode: getParam(values['operation_mode'], v => parseInt(v)),
-          ecoMode: getParam(values['eco_mode'], v => parseInt(v)),
-          airSwingLR: getParam(values['air_swing_lr'], v => parseInt(v)),
-          airSwingUD: getParam(values['air_swing_ud'], v => parseInt(v)),
-          fanAutoMode: getParam(values['fan_auto_mode'], v => parseInt(v)),
-          fanSpeed: getParam(values['fan_speed'], v => parseInt(v)),
-          actualNanoe: getParam(values['nanoe_mode'], v => parseInt(v))
-        };
-        this.log('setParameters:', params);
-        await this.client?.setParameters(this.id, params);
-        await this.updateAndRestartTimer();
-      },
+      values => this.setParametersFromCapabilityValues(values),
       3000
     );
 

@@ -6,19 +6,19 @@
     "setable": true,
     "values": [
         {
-            "id": "1",
+            "id": "Disabled",
             "title": { "en": "Disabled"}
         },
         {
-            "id": "0",
+            "id": "AirSwingAuto",
             "title": { "en": "AirSwingAuto"}
         },
         {
-            "id": "3",
+            "id": "AitSwingLR",
             "title": { "en": "AitSwingLR"}
         },
         {
-            "id": "2",
+            "id": "AirSwingUD",
             "title": { "en": "AirSwingUD"}
         }
     ]

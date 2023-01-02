@@ -2,7 +2,7 @@
   "name": {
     "en": "AirCon"
   },
-  "class": "fan",
+  "class": "thermostat",
   "capabilities": [
     "target_temperature",
     "measure_temperature",

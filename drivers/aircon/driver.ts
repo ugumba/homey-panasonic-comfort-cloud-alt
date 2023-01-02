@@ -1,12 +1,11 @@
 import Homey from 'homey';
-import { ComfortCloudClient } from 'panasonic-comfort-cloud-client';
+import { ComfortCloudClient, TokenExpiredError } from 'panasonic-comfort-cloud-client';
 
 export class MyDriver extends Homey.Driver {
 
   client: ComfortCloudClient | null = null;
 
-  async getClient() : Promise<ComfortCloudClient | null>
-  {
+  async getClient() : Promise<ComfortCloudClient> {
     if (!this.client)
     {
       this.log('initializing client');
@@ -18,10 +17,7 @@ export class MyDriver extends Homey.Driver {
         const username = this.homey.settings.get("username");
         const password = this.homey.settings.get("password");
         if (!username || !password)
-        {
-          this.log('missing credentials');
-          return null;
-        }
+          throw 'missing credentials';
         this.log('authenticating as '+username);
         token = await this.client.login(username, password);
         this.homey.settings.set("token", token);
@@ -35,10 +31,48 @@ export class MyDriver extends Homey.Driver {
     return this.client;
   }
 
+  async invokeClient<T>(request: (client: ComfortCloudClient) => Promise<T>) : Promise<T> {
+    while (true)
+    {
+      let client = await this.getClient();
+      try {
+        return await request(client);
+      }
+      catch (e) {
+        if (e instanceof TokenExpiredError)
+        {
+          this.log('invokeClient TokenExpiredError');
+          this.resetClient();
+        }
+        else
+        {
+          this.log('invokeClient exception:', e);
+          throw e;
+        }
+      }
+    }
+  }
+
+  resetClient() {
+    this.log('resetClient');
+    this.client = null;
+    this.homey.settings.set("token", null);
+  }
+
   /**
    * onInit is called when the driver is initialized.
    */
   async onInit() {
+
+    this.homey.on('settings.set', () => {
+      this.log('settings.set');
+      this.resetClient();
+    });
+    this.homey.on('settings.unset', () => {
+      this.log('settings.unset');
+      this.resetClient();
+    });
+
     this.log('MyDriver has been initialized');
   }
 
@@ -47,34 +81,14 @@ export class MyDriver extends Homey.Driver {
    * This should return an array with the data of devices that are available for pairing.
    */
   async onPairListDevices() {
-
     this.log('onPairListDevices');
-
-    let client = await this.getClient();
-    if (!client)
-      return [];
-
-    return (await client.getGroups())
+    return (await this.invokeClient(c => c.getGroups()))
       .flatMap(group => group.devices.map(device => ({
         name: group.name + ": " + device.name,
         data: {
           id: device.guid
         }
       })));
-
-
-    return [
-      // Example device data, note that `store` is optional
-      // {
-      //   name: 'My Device',
-      //   data: {
-      //     id: 'my-device',
-      //   },
-      //   store: {
-      //     address: '127.0.0.1',
-      //   },
-      // },
-    ];
   }
 
 }

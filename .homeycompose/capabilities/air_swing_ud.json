@@ -6,23 +6,23 @@
     "setable": true,
     "values": [
         {
-            "id": "0",
+            "id": "Up",
             "title": { "en": "Up"}
         },
         {
-            "id": "3",
+            "id": "UpMid",
             "title": { "en": "UpMid"}
         },
         {
-            "id": "2",
+            "id": "Mid",
             "title": { "en": "Mid"}
         },
         {
-            "id": "4",
+            "id": "DownMid",
             "title": { "en": "DownMid"}
         },
         {
-            "id": "1",
+            "id": "Down",
             "title": { "en": "Down"}
         }
     ]

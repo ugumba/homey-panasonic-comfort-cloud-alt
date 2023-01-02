@@ -6,23 +6,23 @@
     "setable": true,
     "values": [
         {
-            "id": "0",
+            "id": "Left",
             "title": { "en": "Left"}
         },
         {
-            "id": "4",
+            "id": "LeftMid",
             "title": { "en": "LeftMid"}
         },
         {
-            "id": "2",
+            "id": "Mid",
             "title": { "en": "Mid"}
         },
         {
-            "id": "3",
+            "id": "RightMid",
             "title": { "en": "RightMid"}
         },
         {
-            "id": "1",
+            "id": "Right",
             "title": { "en": "Right"}
         }
     ]

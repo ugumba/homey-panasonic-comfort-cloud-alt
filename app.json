@@ -34,7 +34,7 @@
       "name": {
         "en": "AirCon"
       },
-      "class": "fan",
+      "class": "thermostat",
       "capabilities": [
         "target_temperature",
         "measure_temperature",
@@ -85,31 +85,31 @@
       "setable": true,
       "values": [
         {
-          "id": "0",
+          "id": "Left",
           "title": {
             "en": "Left"
           }
         },
         {
-          "id": "4",
+          "id": "LeftMid",
           "title": {
             "en": "LeftMid"
           }
         },
         {
-          "id": "2",
+          "id": "Mid",
           "title": {
             "en": "Mid"
           }
         },
         {
-          "id": "3",
+          "id": "RightMid",
           "title": {
             "en": "RightMid"
           }
         },
         {
-          "id": "1",
+          "id": "Right",
           "title": {
             "en": "Right"
           }
@@ -126,31 +126,31 @@
       "setable": true,
       "values": [
         {
-          "id": "0",
+          "id": "Up",
           "title": {
             "en": "Up"
           }
         },
         {
-          "id": "3",
+          "id": "UpMid",
           "title": {
             "en": "UpMid"
           }
         },
         {
-          "id": "2",
+          "id": "Mid",
           "title": {
             "en": "Mid"
           }
         },
         {
-          "id": "4",
+          "id": "DownMid",
           "title": {
             "en": "DownMid"
           }
         },
         {
-          "id": "1",
+          "id": "Down",
           "title": {
             "en": "Down"
           }
@@ -167,19 +167,19 @@
       "setable": true,
       "values": [
         {
-          "id": "0",
+          "id": "Auto",
           "title": {
             "en": "Auto"
           }
         },
         {
-          "id": "1",
+          "id": "Powerful",
           "title": {
             "en": "Powerful"
           }
         },
         {
-          "id": "2",
+          "id": "Quiet",
           "title": {
             "en": "Quiet"
           }
@@ -196,25 +196,25 @@
       "setable": true,
       "values": [
         {
-          "id": "1",
+          "id": "Disabled",
           "title": {
             "en": "Disabled"
           }
         },
         {
-          "id": "0",
+          "id": "AirSwingAuto",
           "title": {
             "en": "AirSwingAuto"
           }
         },
         {
-          "id": "3",
+          "id": "AitSwingLR",
           "title": {
             "en": "AitSwingLR"
           }
         },
         {
-          "id": "2",
+          "id": "AirSwingUD",
           "title": {
             "en": "AirSwingUD"
           }
@@ -231,37 +231,37 @@
       "setable": true,
       "values": [
         {
-          "id": "0",
+          "id": "Auto",
           "title": {
             "en": "Auto"
           }
         },
         {
-          "id": "1",
+          "id": "Low",
           "title": {
             "en": "Low"
           }
         },
         {
-          "id": "2",
+          "id": "LowMid",
           "title": {
             "en": "LowMid"
           }
         },
         {
-          "id": "3",
+          "id": "Mid",
           "title": {
             "en": "Mid"
           }
         },
         {
-          "id": "4",
+          "id": "HighMid",
           "title": {
             "en": "HighMid"
           }
         },
         {
-          "id": "5",
+          "id": "High",
           "title": {
             "en": "High"
           }
@@ -278,31 +278,31 @@
       "setable": true,
       "values": [
         {
-          "id": "0",
+          "id": "Unavailable",
           "title": {
             "en": "Unavailable"
           }
         },
         {
-          "id": "1",
+          "id": "Off",
           "title": {
             "en": "Off"
           }
         },
         {
-          "id": "2",
+          "id": "On",
           "title": {
             "en": "On"
           }
         },
         {
-          "id": "3",
+          "id": "ModeG",
           "title": {
             "en": "ModeG"
           }
         },
         {
-          "id": "4",
+          "id": "All",
           "title": {
             "en": "All"
           }
@@ -319,31 +319,31 @@
       "setable": true,
       "values": [
         {
-          "id": "0",
+          "id": "Auto",
           "title": {
             "en": "Auto"
           }
         },
         {
-          "id": "1",
+          "id": "Dry",
           "title": {
             "en": "Dry"
           }
         },
         {
-          "id": "2",
+          "id": "Cool",
           "title": {
             "en": "Cool"
           }
         },
         {
-          "id": "3",
+          "id": "Heat",
           "title": {
             "en": "Heat"
           }
         },
         {
-          "id": "4",
+          "id": "Fan",
           "title": {
             "en": "Fan"
           }

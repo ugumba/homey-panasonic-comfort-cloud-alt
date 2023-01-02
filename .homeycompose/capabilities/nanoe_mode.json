@@ -6,23 +6,23 @@
     "setable": true,
     "values": [
         {
-            "id": "0",
+            "id": "Unavailable",
             "title": { "en": "Unavailable"}
         },
         {
-            "id": "1",
+            "id": "Off",
             "title": { "en": "Off"}
         },
         {
-            "id": "2",
+            "id": "On",
             "title": { "en": "On"}
         },
         {
-            "id": "3",
+            "id": "ModeG",
             "title": { "en": "ModeG"}
         },
         {
-            "id": "4",
+            "id": "All",
             "title": { "en": "All"}
         }
     ]

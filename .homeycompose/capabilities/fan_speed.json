@@ -6,27 +6,27 @@
     "setable": true,
     "values": [
         {
-            "id": "0",
+            "id": "Auto",
             "title": { "en": "Auto"}
         },
         {
-            "id": "1",
+            "id": "Low",
             "title": { "en": "Low"}
         },
         {
-            "id": "2",
+            "id": "LowMid",
             "title": { "en": "LowMid"}
         },
         {
-            "id": "3",
+            "id": "Mid",
             "title": { "en": "Mid"}
         },
         {
-            "id": "4",
+            "id": "HighMid",
             "title": { "en": "HighMid"}
         },
         {
-            "id": "5",
+            "id": "High",
             "title": { "en": "High"}
         }
     ]
