@@ -114,7 +114,7 @@ export class MyDevice extends Homey.Device {
         throw e;
     }
 
-    this.log('Device has been initialized');
+    this.log("Device '"+this.id+"' has been initialized");
   }
 
   /**

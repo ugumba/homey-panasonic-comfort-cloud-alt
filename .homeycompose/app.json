@@ -27,5 +27,9 @@
   },
   "contributors": {
     "developers": []
+  },
+  "source": "https://github.com/ugumba/homey-panasonic-comfort-cloud-alt",
+  "bugs": {
+    "url": "https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues"
   }
 }
