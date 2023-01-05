@@ -53,9 +53,9 @@ export class MyDevice extends Homey.Device {
 
   async fetchAndRestartTimer() {
     if (this.timer)
-      clearInterval(this.timer);
+      this.homey.clearInterval(this.timer);
     await this.fetchFromService(true);
-    this.timer = setInterval(() => this.fetchFromService(false), 60000);
+    this.timer = this.homey.setInterval(() => this.fetchFromService(false), 60000);
   }
 
   async postToService(values: {[x:string]:any}) {
