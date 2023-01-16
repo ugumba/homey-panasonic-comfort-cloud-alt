@@ -4,18 +4,21 @@ This is an alternative unofficial [Homey](https://homey.app) app for controlling
 
 # Why?
 
-There's already an unofficial [Homey app for PCC](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/) (referred to as "the original app" below), but it's closed source, with no official forum, maintained by a single, hard-to-reach developer.  An ad-hoc community thread has gathered [here](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935).
+There's already an unofficial [Homey app for PCC](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/) (referred to as "the original app" below), but it's closed source, with no official forum, and is maintained by a single, hard-to-reach developer.  An ad-hoc community thread has gathered [here](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935).
 
 Panasonic recently imposed rate-limiting on their authentication service.  The original app stopped working - showing "internal server error" or "ServerError" in Homey.  (It probably authenticates on every service request, ignoring the auth token.)
 
 The alternative app presented here is virtually identical in behaviour, except that authentication occurs only once, and the auth token is reused until it expires.
 
-# Usage
+# Installation
 
-This repo is in early development, so not published to Homey store yet.
+This repo is in early development, so not published to Homey store yet.  Athom will probably not approve it easily, because of the existence of the original app.
 
-Adventurous souls can install by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
-*I'm not recommending this - all usage is at your own risk!*
+Adventurous souls can install from [Homey Community Store](https://store.homey.community/app/net.schmidt-cisternas.pcc-alt), or manually by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
+
+*All usage is at your own risk!*  The app has not been through any kind of QA beyond my personal usage.  Having said that, it's been running stable for me for several weeks.
+
+# Configuration
 
 The credentials must be provided in the app settings.  It is recommended that you create distinct credentials for Homey.  Credentials are created with the official PCC app (Android/iPhone), and must be granted permission to control your device(s).  
 
