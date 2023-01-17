@@ -11,7 +11,7 @@ export class MyDriver extends Homey.Driver {
     if (this.client === undefined)
     {
       this.log('initializing client');
-      this.client = new ComfortCloudClient();
+      this.client = new ComfortCloudClient("1.19.0");
       let token:string = this.homey.settings.get("token");
       if (!token || token.length == 0)
       {
