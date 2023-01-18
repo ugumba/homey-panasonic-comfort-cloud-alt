@@ -30,6 +30,12 @@ Note that any flows using the original app must be updated - and there may be mi
 
 (Specifically, I've not yet been able to use [Device Capabilities](https://homey.app/en-us/app/nl.qluster-it.DeviceCapabilities/Device-Capabilities/) to control e.g. "operation mode" or "eco mode", which [I could](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935/31?u=robert_schmidt) with the original app.)
 
+# Troubleshooting
+
+The settings page shows the log contents.  If you have a problem, please copy and paste the entire log into a Github issue, or send me a direct message if you're concerned about privacy.
+
+The log contains the user name (somewhat obfuscated) and PCC device names and IDs (but never the password, obviously).
+
 # Credits
 
   * Vegard Svendsen for [the original Homey app](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/).

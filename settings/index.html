@@ -33,6 +33,13 @@
 
     <button id="save" class="homey-button-primary-full">Save changes</button>
 
+    <fieldset class="homey-form-fieldset">
+      <legend class="homey-form-legend">Log</legend>
+      <div class="homey-form-group">
+        <textarea rows="50" cols="50" wrap="off" id="log"></textarea>
+      </div>
+    </fieldset>  
+
     <script type="text/javascript">
       // a method named 'onHomeyReady' must be present in your code
       function onHomeyReady(Homey) {
@@ -42,6 +49,7 @@
         var usernameElement = document.getElementById("username");
         var passwordElement = document.getElementById("password");
         var saveElement = document.getElementById("save");
+        var logElement = document.getElementById("log");
 
         Homey.get("username", function (err, username) {
           if (err) return Homey.alert(err);
@@ -51,6 +59,11 @@
         Homey.get("password", function (err, password) {
           if (err) return Homey.alert(err);
           passwordElement.value = password;
+        });
+
+        Homey.get("log", function (err, log) {
+          if (err) return Homey.alert(err);
+          logElement.value = log;
         });
 
         saveElement.addEventListener("click", function (e) {

@@ -10,20 +10,22 @@ export class MyDriver extends Homey.Driver {
   async getClient() : Promise<ComfortCloudClient> {
     if (this.client === undefined)
     {
-      this.log('initializing client');
-      this.client = new ComfortCloudClient("1.19.0");
+      let appVersion = "1.19.0";
+      this.log('initializing client ('+appVersion+')');
+      this.client = new ComfortCloudClient(appVersion);
       let token:string = this.homey.settings.get("token");
       if (!token || token.length == 0)
       {
         this.log('  missing token');
-        const username = this.homey.settings.get("username");
-        const password = this.homey.settings.get("password");
+        const username:string = this.homey.settings.get("username");
+        const password:string = this.homey.settings.get("password");
         if (!username || !password)
         {
+          this.log('  missing crdentials');
           this.client = null;
           throw new Error('Provide credentials in app settings.');
         }
-        this.log('  authenticating '+username);
+        this.log('  authenticating '+username.replace("@","[at]").replace(".","[dot]"));
         try {
           token = await this.client.login(username, password);
           this.saveToken(token);
@@ -31,6 +33,7 @@ export class MyDriver extends Homey.Driver {
         }
         catch (e) {
           this.error('  login failed:', e);
+          this.log('  login failed:', e);
           this.client = null; 
         }
       }
@@ -41,6 +44,7 @@ export class MyDriver extends Homey.Driver {
     }
     if (this.client === null)
     {
+      this.log('bad credentials');
       throw new Error('Authentication failed, edit credentials in app settings.');
     }
 
@@ -88,14 +92,14 @@ export class MyDriver extends Homey.Driver {
    */
   async onInit() {
 
-    this.homey.settings.on('set', () => {
-      if (this.ignoreSettings)
+    this.homey.settings.on('set', (key:string) => {
+      if (this.ignoreSettings || key == "log")
         return;
       this.log('settings.set');
       this.resetClient();
     });
-    this.homey.settings.on('unset', () => {
-      if (this.ignoreSettings)
+    this.homey.settings.on('unset', (key:string) => {
+      if (this.ignoreSettings || key == "log")
         return;
       this.log('settings.unset');
       this.resetClient();
@@ -119,7 +123,7 @@ export class MyDriver extends Homey.Driver {
         }
       })));
 
-    if (process.env.DEBUG === "1")
+    if (process.env.DESWBUG === "1")
       devices = devices
         .concat([
           {
@@ -129,6 +133,8 @@ export class MyDriver extends Homey.Driver {
             }
           }
         ]);
+
+    this.log(devices);
 
     return devices;
   }
