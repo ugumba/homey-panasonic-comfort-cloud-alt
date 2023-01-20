@@ -123,16 +123,16 @@ export class MyDriver extends Homey.Driver {
         }
       })));
 
-    if (process.env.DESWBUG === "1")
-      devices = devices
-        .concat([
-          {
-            name: "Mock group: Mock device",
-            data: {
-              id: "deadbeef"
-            }
-          }
-        ]);
+    // if (process.env.DEBUG === "1")
+    //   devices = devices
+    //     .concat([
+    //       {
+    //         name: "Mock group: Mock device",
+    //         data: {
+    //           id: "deadbeef"
+    //         }
+    //       }
+    //     ]);
 
     this.log(devices);
 

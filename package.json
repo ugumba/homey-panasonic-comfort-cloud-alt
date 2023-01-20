@@ -1,6 +1,6 @@
 {
   "name": "net.schmidt-cisternas.pcc-alt",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "app.ts",
   "scripts": {
     "build": "tsc",
