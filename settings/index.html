@@ -31,12 +31,12 @@
       </div>
     </fieldset>
 
-    <button id="save" class="homey-button-primary-full">Save changes</button>
+    <button id="save" class="homey-button-primary-full">Authenticate</button>
 
     <fieldset class="homey-form-fieldset">
-      <legend class="homey-form-legend">Log</legend>
+      <legend class="homey-form-legend">Log (last 200 lines)</legend>
       <div class="homey-form-group">
-        <textarea rows="50" cols="50" wrap="off" id="log"></textarea>
+        <textarea rows="50" cols="80" wrap="off" id="log" style='font: 10px monospace'></textarea>
       </div>
     </fieldset>  
 
@@ -52,28 +52,40 @@
         var logElement = document.getElementById("log");
 
         Homey.get("username", function (err, username) {
-          if (err) return Homey.alert(err);
+          if (err) return handleError(err);
           usernameElement.value = username;
         });
 
         Homey.get("password", function (err, password) {
-          if (err) return Homey.alert(err);
+          if (err) return handleError(err);
           passwordElement.value = password;
         });
 
-        Homey.get("log", function (err, log) {
-          if (err) return Homey.alert(err);
-          logElement.value = log;
+        refreshLog();
+        setInterval(refreshLog, 5000);
+
+        let saveTimer = undefined;
+        saveElement.addEventListener("click", function (e) {
+          clearTimeout(saveTimer);
+          saveElement.textContent = "Saving...";
+          Homey.set("username", usernameElement.value, handleError);
+          Homey.set("password", passwordElement.value, handleError);
+          Homey.unset("token", handleError);
+          saveElement.textContent = "Saved!";
+          saveTimer = setTimeout(() => saveElement.textContent = "Authenticate", 1500);
         });
 
-        saveElement.addEventListener("click", function (e) {
-          Homey.set("username", usernameElement.value, function (err) {
-            if (err) return Homey.alert(err);
+        function refreshLog() {
+          Homey.get("log", function (err, log) {
+            if (err) return handleError(err);
+            logElement.value = log;
+            logElement.scrollTop = logElement.scrollHeight;
           });
-          Homey.set("password", passwordElement.value, function (err) {
-            if (err) return Homey.alert(err);
-          });
-        });
+        }
+      }
+
+      function handleError(err) {
+        if (err) return Homey.alert(err);
       }
     </script>
   </body>

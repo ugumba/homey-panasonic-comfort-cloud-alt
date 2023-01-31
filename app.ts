@@ -12,7 +12,7 @@ class MyApp extends Homey.App {
   async onInit() {
 
     this.unhook = hook_stdout((str:string) => {
-      this.logs = this.logs.slice(-1000).concat(str);
+      this.logs = this.logs.slice(-200).concat(str);
       this.homey.settings.set("log", this.logs.join(""));
     });
 

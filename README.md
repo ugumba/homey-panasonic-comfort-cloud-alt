@@ -14,13 +14,13 @@ The alternative app presented here is virtually identical in behaviour, except t
 
 This repo is in early development, so not published to Homey store yet.  Athom will probably not approve it easily, because of the existence of the original app.
 
-Adventurous souls can install from [Homey Community Store](https://store.homey.community/app/net.schmidt-cisternas.pcc-alt), or manually by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
+You may install it from [Homey Community Store](https://store.homey.community/app/net.schmidt-cisternas.pcc-alt), or manually by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
 
-*All usage is at your own risk!*  The app has not been through any kind of QA beyond my personal usage.  Having said that, it's been running stable for me for several weeks.
+*All usage is at your own risk!*  The app has not been through any kind of QA beyond myself and a few users testing it.  Having said that, it's been running stable for me for several weeks.
 
 # Configuration
 
-The credentials must be provided in the app settings.  It is recommended that you create distinct credentials for Homey.  Credentials are created with the official PCC app (Android/iPhone), and must be granted permission to control your device(s).  
+The credentials must be provided in the app settings.  It is recommended that you create distinct credentials for Homey.  Credentials must be created using the official PCC app (Android/iPhone), and must be granted permission to control your device(s).  
 
 You should disable the original app, otherwise it's likely to keep causing your credentials to be blocked.  If your credentials are currently blocked, they won't work any better in my app.  You might have to wait up to 24 hours before the block lifts, or you can create new credentials.
 
@@ -32,7 +32,7 @@ Note that any flows using the original app must be updated - and there may be mi
 
 # Troubleshooting
 
-The settings page shows the log contents.  If you have a problem, please copy and paste the entire log into a Github issue, or send me a direct message if you're concerned about privacy.
+The settings page shows the most recent log contents.  If you have a problem, please copy and paste the entire log into a Github issue, or send me a direct message if you're concerned about privacy.
 
 The log contains the user name (somewhat obfuscated) and PCC device names and IDs (but never the password, obviously).
 
@@ -41,4 +41,5 @@ The log contains the user name (somewhat obfuscated) and PCC device names and ID
   * Vegard Svendsen for [the original Homey app](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/).
   * The app relies heavily on [panasonic-comfort-cloud-client](https://github.com/marc2016/panasonic-comfort-cloud-client).  The main reason I got the app working within a couple of hours!
   * Athom provides an easy to use [CLI, SDK and app template](https://apps.developer.homey.app/the-basics/getting-started/homey-cli).  The combined quality ensured I hit the ground running.
+  * Thanks to the maintainers of [Homey Community Store](https://store.homey.community) for providing a home!
   * Icon downloaded from [SVG Repo](https://www.svgrepo.com/svg/288102/air-conditioning-air-conditioner).
