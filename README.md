@@ -2,9 +2,11 @@
 
 This is an alternative unofficial [Homey](https://homey.app) app for controlling air conditioning and heat pump devices via the [Panasonic Comfort Cloud](https://www.panasonic.com/global/hvac/air-conditioning/connectivity/comfort-cloud.html) service.
 
+A discussion topic can be found [here](https://community.homey.app/t/app-pro-panasonic-comfort-cloud-alternative/75906).
+
 # Why?
 
-There's already an unofficial [Homey app for PCC](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/) (referred to as "the original app" below), but it's closed source, with no official forum, and is maintained by a single, hard-to-reach developer.  An ad-hoc community thread has gathered [here](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935).
+There's already an unofficial [Homey app for PCC](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/) (referred to as "the original app" below), but it's closed source, with no official forum, and is maintained by a single, hard-to-reach developer.  An ad-hoc community thread for the original app has gathered [here](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935).
 
 Panasonic recently imposed rate-limiting on their authentication service.  The original app stopped working - showing "internal server error" or "ServerError" in Homey.  (It probably authenticates on every service request, ignoring the auth token.)
 
