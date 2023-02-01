@@ -34,9 +34,9 @@
     <button id="save" class="homey-button-primary-full">Authenticate</button>
 
     <fieldset class="homey-form-fieldset">
-      <legend class="homey-form-legend">Log (last 200 lines)</legend>
+      <legend class="homey-form-legend">Log (last 500 lines)</legend>
       <div class="homey-form-group">
-        <textarea rows="50" cols="80" wrap="off" id="log" style='font: 10px monospace'></textarea>
+        <textarea rows="30" cols="80" wrap="off" id="log" style='font: 10px monospace'></textarea>
       </div>
     </fieldset>  
 
@@ -62,6 +62,7 @@
         });
 
         refreshLog();
+        logElement.scrollTop = logElement.scrollHeight;
         setInterval(refreshLog, 5000);
 
         let saveTimer = undefined;
@@ -79,7 +80,6 @@
           Homey.get("log", function (err, log) {
             if (err) return handleError(err);
             logElement.value = log;
-            logElement.scrollTop = logElement.scrollHeight;
           });
         }
       }

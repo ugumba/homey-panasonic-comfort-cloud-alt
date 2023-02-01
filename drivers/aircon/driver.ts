@@ -16,35 +16,34 @@ export class MyDriver extends Homey.Driver {
       let token:string = this.homey.settings.get("token");
       if (!token || token.length == 0)
       {
-        this.log('  missing token');
+        this.log('missing token');
         const username:string = this.homey.settings.get("username");
         const password:string = this.homey.settings.get("password");
         if (!username || !password)
         {
-          this.log('  missing crdentials');
+          this.error('missing crdentials');
           this.client = null;
           throw new Error('Provide credentials in app settings.');
         }
-        this.log('  authenticating '+username.replace("@","[at]").replace(".","[dot]"));
+        this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
         try {
           token = await this.client.login(username, password);
           this.saveToken(token);
-          this.log('  saved token');
+          this.log('saved token');
         }
         catch (e) {
-          this.error('  login failed:', e);
-          this.log('  login failed:', e);
+          this.error('login failed:', e);
           this.client = null; 
         }
       }
       else {
         this.client.token = token;
-        this.log('  loaded token');
+        this.log('loaded token');
       }
     }
     if (this.client === null)
     {
-      this.log('bad credentials');
+      this.error('bad credentials');
       throw new Error('Authentication failed, edit credentials in app settings.');
     }
 

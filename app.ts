@@ -1,18 +1,15 @@
 import Homey from 'homey';
-import hook_stdout from './hook';
+import hook_stdouterr from './hook';
 
 class MyApp extends Homey.App {
 
   logs:string[] = [];
   unhook: () => void = () => {};
 
-  /**
-   * onInit is called when the app is initialized.
-   */
   async onInit() {
 
-    this.unhook = hook_stdout((str:string) => {
-      this.logs = this.logs.slice(-200).concat(str);
+    this.unhook = hook_stdouterr((str:string) => {
+      this.logs = this.logs.slice(-500).concat(str);
       this.homey.settings.set("log", this.logs.join(""));
     });
 

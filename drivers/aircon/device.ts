@@ -18,12 +18,12 @@ export class MyDevice extends Homey.Device {
     let current = this.getCapabilityValue(name);
     if (value == current)
       return;
-    this.log("  setCap("+name+"):", value, "(was", current,")");
+    this.log("setCapabilityValue("+name+", "+value+")");
     await this.setCapabilityValue(name, value);
   }
   
   async fetchFromService(forced:boolean) {
-    this.log("fetchFromService("+forced+")");
+    // this.log("fetchFromService("+forced+")");
     let device:Device|null;
     try {
       device = await this.driver.invokeClient(c => c.getDevice(this.id));
@@ -32,7 +32,7 @@ export class MyDevice extends Homey.Device {
         throw new Error("Device "+this.id+" not found.");
     }
     catch (e) {
-      this.error("  getDevice failed:", e);
+      this.error("getDevice failed:", e);
       if (e instanceof Error)
         await this.setWarning(e.message);
       throw e;
@@ -75,7 +75,7 @@ export class MyDevice extends Homey.Device {
       await this.driver.invokeClient(c => c.setParameters(this.id, params));
     }
     catch (e) {
-      this.error("  setParameters failed:", e);
+      this.error("setParameters failed:", e);
       if (e instanceof Error)
         await this.setWarning(e.message);
       throw e;
