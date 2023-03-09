@@ -8,17 +8,19 @@ A discussion topic can be found [here](https://community.homey.app/t/app-pro-pan
 
 There's already an unofficial [Homey app for PCC](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/) (referred to as "the original app" below), but it's closed source, with no official forum, and is maintained by a single, hard-to-reach developer.  An ad-hoc community thread for the original app has gathered [here](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935).
 
-Panasonic recently imposed rate-limiting on their authentication service.  The original app stopped working - showing "internal server error" or "ServerError" in Homey.  (It probably authenticates on every service request, ignoring the auth token.)
+Late 2022, Panasonic imposed rate-limiting on their authentication service.  The original app stopped working - showing "internal server error" or "ServerError" in Homey.  (It probably authenticates on every service request, ignoring the auth token.)
 
 The alternative app presented here is virtually identical in behaviour, except that authentication occurs only once, and the auth token is reused until it expires.
 
 # Installation
 
-This repo is in early development, so not published to Homey store yet.  Athom will probably not approve it easily, because of the existence of the original app.
+This app is not published to Homey store - for me, the effort I'd have to spend on polishing is not worth it.  Athom is also likely to drag their feet approving it, because of the existence of the original app.
 
-You may install it from [Homey Community Store](https://store.homey.community/app/net.schmidt-cisternas.pcc-alt), or manually by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
+However, you may install from [Homey Community Store](https://store.homey.community/app/net.schmidt-cisternas.pcc-alt) - make sure you follow the instructions for [HCS](https://store.homey.community/hcs).
 
-*All usage is at your own risk!*  The app has not been through any kind of QA beyond myself and a few users testing it.  Having said that, it's been running stable for me for several weeks.
+Or, you can install manually by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
+
+The app has not been through any kind of QA beyond myself and a few users testing it.  Having said that, it's been running stable for me for a long time.
 
 # Configuration
 
@@ -30,7 +32,7 @@ If/when the original app is fixed, you should make sure only one of the apps is 
 
 Note that any flows using the original app must be updated - and there may be missing functionality in my app (I've not added any custom flow cards at all).  You may want to duplicate your existing flows and keep the originals disabled (as a backup), in case you want to switch back.
 
-(Specifically, I've not yet been able to use [Device Capabilities](https://homey.app/en-us/app/nl.qluster-it.DeviceCapabilities/Device-Capabilities/) to control e.g. "operation mode" or "eco mode", which [I could](https://community.homey.app/t/error-panasonic-comfort-cloud-app/65935/31?u=robert_schmidt) with the original app.)
+There are no flow cards for setting capabilities other than target temperature.  However, [Device Capabilities](https://homey.app/en-us/app/nl.qluster-it.DeviceCapabilities/Device-Capabilities/) can be used to [achieve the same thing](https://community.homey.app/t/app-pro-panasonic-comfort-cloud-alternative/75906/24?u=robert_schmidt).
 
 # Troubleshooting
 
