@@ -84,6 +84,37 @@ export class MyDevice extends Homey.Device {
   }
 
   /**
+   * Method to collect all our action flow cards
+   */
+  async initActionCards() {
+    const changeAirSwingUD = this.homey.flow.getActionCard('change-air-swing-updown');
+    changeAirSwingUD.registerRunListener(async (args) => {
+      await this.postToService({ air_swing_ud: args.direction });
+    });
+
+    const changeAirSwingLR = this.homey.flow.getActionCard('change-air-swing-leftright');
+    changeAirSwingLR.registerRunListener(async (args) => {
+      await this.postToService({ air_swing_lr: args.direction });
+    });
+
+    const changeOperationMode = this.homey.flow.getActionCard('change-operation-mode');
+    changeOperationMode.registerRunListener(async (args) => {
+      await this.postToService({ operation_mode: args.mode });
+    });
+
+    const changeFanSpeed = this.homey.flow.getActionCard('change-fan-speed');
+    changeFanSpeed.registerRunListener(async (args) => {
+      await this.postToService({ fan_speed: args.speed });
+    });
+
+    const changeEcoMode = this.homey.flow.getActionCard('change-eco-mode');
+    changeEcoMode.registerRunListener(async (args) => {
+      await this.postToService({ eco_mode: args.mode });
+    });
+
+  }
+
+  /**
    * onInit is called when the device is initialized.
    */
   async onInit() {
@@ -113,6 +144,8 @@ export class MyDevice extends Homey.Device {
       else 
         throw e;
     }
+
+    await this.initActionCards();
 
     this.log("Device '"+this.id+"' has been initialized");
   }

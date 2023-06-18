@@ -1,0 +1,53 @@
+{
+  "title": {
+    "en": "Change Fan Speed"
+  },
+  "titleFormatted": {
+    "en": "Change the Fan Speed to [[speed]]"
+  },
+  "args": [
+    {
+      "type": "dropdown",
+      "name": "speed",
+      "title": { "en": "Speed" },
+      "values": [
+        {
+          "id": "Auto",
+          "label": {
+            "en": "Auto"
+          }
+        },
+        {
+          "id": "Low",
+          "label": {
+            "en": "Low"
+          }
+        },
+        {
+          "id": "LowMid",
+          "label": {
+            "en": "LowMid"
+          }
+        },
+        {
+          "id": "Mid",
+          "label": {
+            "en": "Mid"
+          }
+        },
+        {
+          "id": "HighMid",
+          "label": {
+            "en": "HighMid"
+          }
+        },
+        {
+          "id": "High",
+          "label": {
+            "en": "High"
+          }
+        }
+      ]
+    }
+  ]
+}

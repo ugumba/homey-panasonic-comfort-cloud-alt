@@ -1,0 +1,47 @@
+{
+  "title": {
+    "en": "Change the Up/Down Air Swing"
+  },
+    "titleFormatted": {
+    "en": "Change the Up/Down Air Swing to [[direction]]"
+  },
+  "args": [
+    {
+      "type": "dropdown",
+      "name": "direction",
+      "title": { "en": "Direction" },
+      "values": [
+        {
+          "id": "Up",
+          "label": {
+            "en": "Up"
+          }
+        },
+        {
+          "id": "UpMid",
+          "label": {
+            "en": "UpMid"
+          }
+        },
+        {
+          "id": "Mid",
+          "label": {
+            "en": "Mid"
+          }
+        },
+        {
+          "id": "DownMid",
+          "label": {
+            "en": "DownMid"
+          }
+        },
+        {
+          "id": "Down",
+          "label": {
+            "en": "Down"
+          }
+        }
+      ]
+    }
+  ]
+}
