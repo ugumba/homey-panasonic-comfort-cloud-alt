@@ -1,0 +1,47 @@
+{
+  "title": {
+    "en": "Change Operation Mode"
+  },
+  "titleFormatted": {
+    "en": "Change the Operation Mode to [[mode]]"
+  },
+  "args": [
+    {
+      "type": "dropdown",
+      "name": "mode",
+      "title": { "en": "Mode"},
+      "values": [
+        {
+          "id": "Auto",
+          "label": {
+            "en": "Auto"
+          }
+        },
+        {
+          "id": "Dry",
+          "label": {
+            "en": "Dry"
+          }
+        },
+        {
+          "id": "Cool",
+          "label": {
+            "en": "Cool"
+          }
+        },
+        {
+          "id": "Heat",
+          "label": {
+            "en": "Heat"
+          }
+        },
+        {
+          "id": "Fan",
+          "label": {
+            "en": "Fan"
+          }
+        }
+      ]
+    }
+  ]
+}
