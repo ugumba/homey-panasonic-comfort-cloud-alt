@@ -31,9 +31,9 @@ You should disable the original app, otherwise it's likely to keep causing your 
 
 If/when the original app is fixed, you should make sure only one of the apps is enabled at any one time.  Otherwise they will compete to apply settings to your devices, resulting in much more traffic to the servers.
 
-Note that any flows using the original app must be updated - and there may be missing functionality in my app (I've not added any custom flow cards at all).  You may want to duplicate your existing flows and keep the originals disabled (as a backup), in case you want to switch back.
+Note that any flows using the original app must be updated - and there may be missing functionality in my app.  You may want to duplicate your existing flows and keep the originals disabled (as a backup), in case you want to switch back.
 
-There are no flow cards for setting capabilities other than target temperature.  However, [Device Capabilities](https://homey.app/en-us/app/nl.qluster-it.DeviceCapabilities/Device-Capabilities/) can be used to [achieve the same thing](https://community.homey.app/t/app-pro-panasonic-comfort-cloud-alternative/75906/24?u=robert_schmidt).
+There are flow cards for setting capabilities other than target temperature (thanks, [nickmurison](https://github.com/nickmurison)!).
 
 # Troubleshooting
 
@@ -43,6 +43,7 @@ The log contains the user name (somewhat obfuscated) and PCC device names and ID
 
 # Credits
 
+  * [Nick Murison](https://github.com/nickmurison) for [adding more flow cards](https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/pull/7).
   * Vegard Svendsen for [the original Homey app](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/).
   * The app relies heavily on [panasonic-comfort-cloud-client](https://github.com/marc2016/panasonic-comfort-cloud-client).  The main reason I got the app working within a couple of hours!
   * Athom provides an easy to use [CLI, SDK and app template](https://apps.developer.homey.app/the-basics/getting-started/homey-cli).  The combined quality ensured I hit the ground running.
