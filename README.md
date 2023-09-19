@@ -17,9 +17,12 @@ The alternative app presented here is virtually identical in behaviour, except t
 
 This app is not published to Homey store - for me, the effort I'd have to spend on polishing is not worth it.  Athom is also likely to drag their feet approving it, because of the existence of the original app.
 
-However, you may install from [Homey Community Store](https://store.homey.community/app/net.schmidt-cisternas.pcc-alt) - make sure you follow the instructions for [HCS](https://store.homey.community/hcs).
+Currently, the only option is to install the app manually from a PC:
 
-Or, you can install manually by cloning/downloading this repo, setting up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli), and running e.g. ```homey app install```.
+  1. set up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli) (also make sure you keep it up to date),
+  2. authenticate with ```homey login``` and select your Homey,
+  3. run ```npm install``` in your cloned repo folder (this downloads dependencies required by the app),
+  4. run ```homey app install``` in your cloned repo folder (this installs the app on your Homey).
 
 The app has not been through any kind of QA beyond myself and a few users testing it.  Having said that, it's been running stable for me for a long time.
 
