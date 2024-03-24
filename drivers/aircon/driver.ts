@@ -10,7 +10,7 @@ export class MyDriver extends Homey.Driver {
   async getClient() : Promise<ComfortCloudClient> {
     if (this.client === undefined)
     {
-      let appVersion = "1.19.0";
+      let appVersion = "1.20.0";
       this.log('initializing client ('+appVersion+')');
       this.client = new ComfortCloudClient(appVersion);
       let token:string = this.homey.settings.get("token");
