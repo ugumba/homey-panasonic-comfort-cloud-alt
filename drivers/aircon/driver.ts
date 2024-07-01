@@ -13,32 +13,22 @@ export class MyDriver extends Homey.Driver {
       let appVersion = "1.20.1";
       this.log('initializing client ('+appVersion+')');
       this.client = new ComfortCloudClient(appVersion);
-      let token:string = this.homey.settings.get("token");
-      if (!token || token.length == 0)
+      const username:string = this.homey.settings.get("username");
+      const password:string = this.homey.settings.get("password");
+      if (!username || !password)
       {
-        this.log('missing token');
-        const username:string = this.homey.settings.get("username");
-        const password:string = this.homey.settings.get("password");
-        if (!username || !password)
-        {
-          this.error('missing crdentials');
-          this.client = null;
-          throw new Error('Provide credentials in app settings.');
-        }
-        this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
-        try {
-          token = await this.client.login(username, password);
-          this.saveToken(token);
-          this.log('saved token');
-        }
-        catch (e) {
-          this.error('login failed:', e);
-          this.client = null; 
-        }
+        this.error('missing crdentials');
+        this.client = null;
+        throw new Error('Provide credentials in app settings.');
       }
-      else {
-        this.client.token = token;
-        this.log('loaded token');
+      this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
+      try {
+        await this.client.login(username, password);
+        this.log('authenticated');
+      }
+      catch (e) {
+        this.error('login failed:', e);
+        this.client = null; 
       }
     }
     if (this.client === null)
@@ -74,16 +64,9 @@ export class MyDriver extends Homey.Driver {
   resetClient() {
     this.log('resetClient');
     this.client = undefined;
-    this.saveToken(null);
 
     this.getDevices()
       .forEach(device => (device as MyDevice).fetchAndRestartTimer());
-  }
-
-  saveToken(token:string|null) {
-    this.ignoreSettings=true;
-    this.homey.settings.set("token", token);
-    this.ignoreSettings=false;
   }
 
   /**
