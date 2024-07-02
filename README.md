@@ -46,6 +46,7 @@ The log contains the user name (somewhat obfuscated) and PCC device names and ID
 
 # Credits
 
+  * [Magnus Rydjord](https://github.com/Magnusri) for PCC app version autodetection code
   * [Nick Murison](https://github.com/nickmurison) for [adding more flow cards](https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/pull/7).
   * Vegard Svendsen for [the original Homey app](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/).
   * The app relies heavily on [panasonic-comfort-cloud-client](https://github.com/marc2016/panasonic-comfort-cloud-client).  The main reason I got the app working within a couple of hours!
