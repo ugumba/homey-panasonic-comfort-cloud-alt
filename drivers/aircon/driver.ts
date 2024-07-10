@@ -37,7 +37,13 @@ export class MyDriver extends Homey.Driver {
   async getClient() : Promise<ComfortCloudClient> {
     if (this.client === undefined)
     {
-      let appVersion = await this.getLatestAppVersion();
+      let appVersion = "1.21.0";
+      try {
+        appVersion = await this.getLatestAppVersion();
+      }
+      catch (e) {
+        this.error('pcc app version query to itunes failed', e);
+      }
       this.log('initializing client ('+appVersion+')');
       this.client = new ComfortCloudClient(appVersion);
       const username:string = this.homey.settings.get("username");
