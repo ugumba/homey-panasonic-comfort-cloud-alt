@@ -145,6 +145,7 @@ export class MyDevice extends Homey.Device {
         throw e;
     }
 
+    // TO BE DEPRECATED: Do not initialize action cards from the device (since devices::onInit is called for every device) but from drivers::onInit
     await this.initActionCards();
 
     this.log("Device '"+this.id+"' has been initialized");
@@ -175,7 +176,7 @@ export class MyDevice extends Homey.Device {
    * @param {string} name The new name
    */
   async onRenamed(name: string) {
-    this.log('Device was renamed');
+    this.log("Device '"+this.id+"' was renamed to '"+name+"'");
   }
 
   /**
@@ -184,7 +185,7 @@ export class MyDevice extends Homey.Device {
   async onDeleted() {
     if (this.timer)
       clearInterval(this.timer);
-    this.log('Device has been deleted');
+    this.log("Device '"+this.id+"' has been deleted");
   }
 
 }
