@@ -1,9 +1,10 @@
 {
   "title": {
-    "en": "Change the Left/Right Air Swing"
+    "en": "DEPRECATED: Change the Left/Right Air Swing"
   },
+  "deprecated": true,
   "titleFormatted": {
-    "en": "Change the Left/Right Air Swing to [[direction]]"
+    "en": "DEPRECATED: Change the Left/Right Air Swing to [[direction]]"
   },
   "args": [
     {

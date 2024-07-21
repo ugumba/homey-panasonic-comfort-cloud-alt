@@ -1,9 +1,10 @@
 {
   "title": {
-    "en": "Change Operation Mode"
+    "en": "DEPRECATED: Change Operation Mode"
   },
+  "deprecated": true,
   "titleFormatted": {
-    "en": "Change the Operation Mode to [[mode]]"
+    "en": "DEPRECATED: Change the Operation Mode to [[mode]]"
   },
   "args": [
     {
