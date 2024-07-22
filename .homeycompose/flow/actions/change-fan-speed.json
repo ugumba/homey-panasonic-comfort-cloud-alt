@@ -1,9 +1,10 @@
 {
   "title": {
-    "en": "Change Fan Speed"
+    "en": "DEPRECATED: Change Fan Speed"
   },
+  "deprecated": true,
   "titleFormatted": {
-    "en": "Change the Fan Speed to [[speed]]"
+    "en": "DEPRECATED: Change the Fan Speed to [[speed]]"
   },
   "args": [
     {

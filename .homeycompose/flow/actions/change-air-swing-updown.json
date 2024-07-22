@@ -1,9 +1,10 @@
 {
   "title": {
-    "en": "Change the Up/Down Air Swing"
+    "en": "DEPRECATED: Change the Up/Down Air Swing"
   },
-    "titleFormatted": {
-    "en": "Change the Up/Down Air Swing to [[direction]]"
+  "deprecated": true,
+  "titleFormatted": {
+    "en": "DEPRECATED: Change the Up/Down Air Swing to [[direction]]"
   },
   "args": [
     {

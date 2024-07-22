@@ -1,9 +1,10 @@
 {
   "title": {
-    "en": "Change Eco Mode"
+    "en": "DEPRECATED: Change Eco Mode"
   },
+  "deprecated": true,
   "titleFormatted": {
-    "en": "Change the Eco Mode to [[mode]]"
+    "en": "DEPRECATED: Change the Eco Mode to [[mode]]"
   },
   "args": [
     {
