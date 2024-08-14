@@ -103,6 +103,36 @@ export class MyDriver extends Homey.Driver {
   }
 
   /**
+   * Method to register all device specific action flow cards
+   */
+    async initActionCards() {
+      const changeAirSwingLR = this.homey.flow.getActionCard('device-change-air-swing-leftright');
+      changeAirSwingLR.registerRunListener(async (args) => {
+        await args.device.postToService({ air_swing_lr: args.direction });
+      });
+
+      const changeAirSwingUD = this.homey.flow.getActionCard('device-change-air-swing-updown');
+      changeAirSwingUD.registerRunListener(async (args) => {
+        await args.device.postToService({ air_swing_ud: args.direction });
+      });
+
+      const changeEcoMode = this.homey.flow.getActionCard('device-change-eco-mode');
+      changeEcoMode.registerRunListener(async (args) => {
+        await args.device.postToService({ eco_mode: args.mode });
+      });
+
+      const changeFanSpeed = this.homey.flow.getActionCard('device-change-fan-speed');
+      changeFanSpeed.registerRunListener(async (args) => {
+        await args.device.postToService({ fan_speed: args.speed });
+      });
+
+      const changeOperationMode = this.homey.flow.getActionCard('device-change-operation-mode');
+      changeOperationMode.registerRunListener(async (args) => {
+        await args.device.postToService({ operation_mode: args.mode });
+      });
+    }
+
+  /**
    * onInit is called when the driver is initialized.
    */
   async onInit() {
@@ -119,6 +149,9 @@ export class MyDriver extends Homey.Driver {
       this.log('settings.unset');
       this.resetClient();
     });
+
+    // Register all device specific action flow cards
+    await this.initActionCards();
 
     this.log('Driver has been initialized');
   }
