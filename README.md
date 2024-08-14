@@ -32,7 +32,7 @@ The credentials must be provided in the app settings.  It is recommended that yo
 
 You should disable the original app, otherwise it's likely to keep causing your credentials to be blocked.  If your credentials are currently blocked, they won't work any better in my app.  You might have to wait up to 24 hours before the block lifts, or you can create new credentials.
 
-If/when the original app is fixed, you should make sure only one of the apps is enabled at any one time.  Otherwise they will compete to apply settings to your devices, resulting in much more traffic to the servers.
+Avoid using both apps at the same time, at least against the same devices - you risk that they "compete" applying their settings to your devices, resulting in much more traffic to the servers and in wearing your devices down.
 
 Note that any flows using the original app must be updated - and there may be missing functionality in my app.  You may want to duplicate your existing flows and keep the originals disabled (as a backup), in case you want to switch back.
 
