@@ -13,9 +13,11 @@ Late 2022, Panasonic imposed rate-limiting on their authentication service.  The
 
 The alternative app presented here is virtually identical in behaviour, except that authentication occurs only once, and the auth token is reused until it expires.
 
-# Installation
+Panasonic makes frequent changes to their auth flow - I'm sure these are improvements for the better (security, stability), but since they don't treat their services as public, there are no announcements or documentation.  Home automation developers have no choice but to discover changes and breakage after the fact, and react - often having to study and/or reverse engineer Panasonic's own apps in order to understand how.  You just need to be aware that, because of this, the app may stop working at any moment.  Ideally Panasonic maintained their own home automation system integrations, or at least provided documentation and a transparent release cycle for their auth and services.  Instead, this app relies heavily (almost entirely!) on the community contributions from developers like [marc2016](https://github.com/marc2016), without whose [panasonic-comfort-cloud-client](https://github.com/marc2016/panasonic-comfort-cloud-client) package, this app (and probably others) would either not exist or be broken for much longer periods.
 
-This app is not published to Homey store - for me, the effort I'd have to spend on polishing is not worth it.  Athom is also likely to drag their feet approving it, because of the existence of the original app.
+This app is not published to Homey store - for me, the effort I'd have to spend on polishing is not worth it.  Athom is also likely to drag their feet approving it, because of the existence of the original app.  Also, because Panasonic is not providing the API as a publicly reliable service, I'm thoroughly discouraged from taking on responsibility (no matter how tenuous) for a working app in an official app store.
+
+# Installation
 
 Currently, the only option is to install the app manually from a PC:
 
