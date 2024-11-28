@@ -1,6 +1,7 @@
 import Homey from 'homey';
 import { ComfortCloudClient, TokenExpiredError } from 'panasonic-comfort-cloud-client';
 import { MyDevice } from './device';
+import { Mutex } from 'async-mutex';
 
 // From https://github.com/Magnusri/homey-panasonic-comfort-cloud-alt/blob/master/drivers/aircon/driver.ts
 // This is a workaround for using node-fetch in Homey apps
@@ -12,6 +13,7 @@ export class MyDriver extends Homey.Driver {
 
   client: ComfortCloudClient | null | undefined = undefined;
   ignoreSettings:boolean=false;
+  clientMutex:Mutex = new Mutex();
 
   // From https://github.com/Magnusri/homey-panasonic-comfort-cloud-alt/blob/master/drivers/aircon/driver.ts
   async getLatestAppVersion(): Promise<string> {
@@ -37,34 +39,39 @@ export class MyDriver extends Homey.Driver {
   async getClient() : Promise<ComfortCloudClient> {
     if (this.client === undefined)
     {
-      let appVersion = "1.21.0";
-      try {
-        appVersion = await this.getLatestAppVersion();
-      }
-      catch (e) {
-        this.error('pcc app version query to itunes failed', e);
-      }
-      this.log('initializing client ('+appVersion+')');
-      this.client = new ComfortCloudClient(appVersion);
-      const username:string = this.homey.settings.get("username");
-      const password:string = this.homey.settings.get("password");
-      if (!username || !password)
-      {
-        this.error('missing crdentials');
-        this.client = null;
-        throw new Error('Provide credentials in app settings.');
-      }
-      this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
-      try {
-        await this.client.login(username, password);
-        this.log('authenticated');
-      }
-      catch (e) {
-        this.error('login failed:', e);
-        this.client = null; 
-      }
-    }
-    if (this.client === null)
+      await this.clientMutex.runExclusive(async () => {
+        if (this.client === undefined)
+        {
+          let appVersion = "1.21.0";
+          try {
+            appVersion = await this.getLatestAppVersion();
+          }
+          catch (e) {
+            this.error('pcc app version query to itunes failed', e);
+          }
+          this.log('initializing client ('+appVersion+')');
+          this.client = new ComfortCloudClient(appVersion);
+          const username:string = this.homey.settings.get("username");
+          const password:string = this.homey.settings.get("password");
+          if (!username || !password)
+          {
+            this.error('missing crdentials');
+            this.client = null;
+            throw new Error('Provide credentials in app settings.');
+          }
+          this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
+          try {
+            await this.client.login(username, password);
+            this.log('authenticated');
+          }
+          catch (e) {
+            this.error('login failed:', e);
+            this.client = null; 
+          }
+        }
+      });
+    };
+    if (this.client === null || this.client === undefined /*this shouldn't happen*/)
     {
       this.error('bad credentials');
       throw new Error('Authentication failed, edit credentials in app settings.');
