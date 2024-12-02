@@ -1,6 +1,6 @@
 import Homey from 'homey';
 import { MyDriver } from './driver';
-import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device } from 'panasonic-comfort-cloud-client';
+import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device, ComfortCloudClient } from 'panasonic-comfort-cloud-client';
 
 function getParam(value:any, transform: (v:any) => any) : any {
   if (value === undefined)
@@ -12,21 +12,74 @@ export class MyDevice extends Homey.Device {
 
   id: string = this.getData().id;
   driver: MyDriver = this.driver as MyDriver;
-  timer: NodeJS.Timer|null = null; 
+  timer: NodeJS.Timer|null = null;
 
   async setCap<T>(name:string, value:T) {
+    // Try adding the capability if it does not exist
+    if (!this.hasCapability(name)) {
+      this.addCapability(name);
+    }
     let current = this.getCapabilityValue(name);
     if (value == current)
       return;
     this.log("setCapabilityValue("+name+", "+value+")");
     await this.setCapabilityValue(name, value);
   }
+
+  // Convert timezone from Homey format to "+01:00" format
+  getCurrentTimezoneOffset(timeZone: string) {
+    const date = new Date();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'longOffset',
+    });
+
+    const parts = formatter.formatToParts(date);
+    const offsetPart = parts.find(part => part.type === 'timeZoneName');
+    return offsetPart ? offsetPart.value.slice(3) : null;
+  }
+
+  // Fetch the last hour's power consumption in watts
+  // This will register the consumption with one hour delay, as the last hour is not complete yet.
+  async fetchLastHourWattsConsumption(client: ComfortCloudClient, device: Device | null) {
+    if (!device)
+      return;
+
+    // Get the timezone offset in the format "+01:00" with Europe/Oslo as default (Change this to some other default?)
+    let timeZone = this.getCurrentTimezoneOffset(this.homey.clock.getTimezone() || 'Europe/Oslo') || '+01:00';
+
+    // Get today's history data for the device
+    let historyData = await client.getDeviceHistoryData(device.guid, new Date(), 0, timeZone);
+    
+    // Filter out the -255 values, which are used to indicate hours that has not passed yet in the current day
+    let historyWithData = historyData.historyDataList.filter((i: any) => i.consumption != -255);
+
+    // Get the consumption from the second last hour (the last hour is not complete yet)
+    let consumption = historyWithData?.[historyWithData?.length - 2]?.consumption;
+
+    // Set the measure_avg_consumption_wh capability to the consumption in watts instead of kilowatts
+    this.setCap('measure_avg_consumption_wh', consumption * 1000);
+  }
   
   async fetchFromService(forced:boolean) {
     // this.log("fetchFromService("+forced+")");
     let device:Device|null;
     try {
-      device = await this.driver.invokeClient(c => c.getDevice(this.id));
+      device = await this.driver.invokeClient(async c => {
+        let device = await c.getDevice(this.id);
+
+        // Fetch and set the last hour's power consumption
+        await this.fetchLastHourWattsConsumption(c, device);
+
+        return device;
+      });
       //TODO: the mock device throws 403 above
       if (!device)
         throw new Error("Device "+this.id+" not found.");
@@ -41,6 +94,7 @@ export class MyDevice extends Homey.Device {
 
     await this.setCap('onoff', device.operate == Power.On);
     await this.setCap('measure_temperature', device.insideTemperature);
+    await this.setCap('measure_temperature_outside', device.outTemperature);
     await this.setCap('target_temperature', device.temperatureSet);
     await this.setCap('operation_mode', OperationMode[device.operationMode]);
     await this.setCap('eco_mode', EcoMode[device.ecoMode]);
@@ -184,7 +238,7 @@ export class MyDevice extends Homey.Device {
    */
   async onDeleted() {
     if (this.timer)
-      clearInterval(this.timer);
+      this.homey.clearInterval(this.timer);
     this.log("Device '"+this.id+"' has been deleted");
   }
 
