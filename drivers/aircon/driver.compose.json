@@ -6,6 +6,7 @@
   "capabilities": [
     "target_temperature",
     "measure_temperature",
+    "measure_temperature_outside",
     "onoff",
     "operation_mode",
     "eco_mode",
@@ -13,8 +14,15 @@
     "fan_speed",
     "air_swing_lr",
     "air_swing_ud",
-    "nanoe_mode"
+    "nanoe_mode",
+    "measure_avg_consumption_wh"
   ],
+  "capabilitiesOptions": {
+    "measure_avg_consumption_wh": {
+      "approximated": true,
+      "preventTag": true
+    }
+  },
   "platforms": [
     "local"
   ],
