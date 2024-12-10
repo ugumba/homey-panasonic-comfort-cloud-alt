@@ -1,0 +1,17 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Average W last hour",
+    "no": "Snitt W siste time"
+  },
+  "uiComponent": "sensor",
+  "units": { "en": "W" },
+  "icon": "assets/bolt.svg",
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Avg W per hour",
+    "no": "Snitt W per time"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Outside Temperature",
+    "no": "Temperatur Ute"
+  },
+  "uiComponent": "sensor",
+  "units": { "en": "°C" },
+  "icon": "assets/measure_temperature.svg",
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Temperature Outside",
+    "no": "Temperatur Ute"
+  }
+  }

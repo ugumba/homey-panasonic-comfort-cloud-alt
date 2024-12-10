@@ -564,6 +564,7 @@
       "capabilities": [
         "target_temperature",
         "measure_temperature",
+        "measure_temperature_outside",
         "onoff",
         "operation_mode",
         "eco_mode",
@@ -571,8 +572,15 @@
         "fan_speed",
         "air_swing_lr",
         "air_swing_ud",
-        "nanoe_mode"
+        "nanoe_mode",
+        "measure_avg_consumption_wh"
       ],
+      "capabilitiesOptions": {
+        "measure_avg_consumption_wh": {
+          "approximated": true,
+          "preventTag": true
+        }
+      },
       "platforms": [
         "local"
       ],
@@ -808,6 +816,44 @@
           }
         }
       ]
+    },
+    "measure_avg_consumption_wh": {
+      "type": "number",
+      "title": {
+        "en": "Average W last hour",
+        "no": "Snitt W siste time"
+      },
+      "uiComponent": "sensor",
+      "units": {
+        "en": "W"
+      },
+      "icon": "assets/bolt.svg",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Avg W per hour",
+        "no": "Snitt W per time"
+      }
+    },
+    "measure_temperature_outside": {
+      "type": "number",
+      "title": {
+        "en": "Outside Temperature",
+        "no": "Temperatur Ute"
+      },
+      "uiComponent": "sensor",
+      "units": {
+        "en": "°C"
+      },
+      "icon": "assets/measure_temperature.svg",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Temperature Outside",
+        "no": "Temperatur Ute"
+      }
     },
     "nanoe_mode": {
       "type": "enum",
