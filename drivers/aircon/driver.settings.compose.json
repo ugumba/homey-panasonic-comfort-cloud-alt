@@ -1,0 +1,15 @@
+[
+    {
+      "id": "alwayson",
+      "type": "checkbox",
+      "label": {
+        "en": "Always on",
+        "no": "Alltid på"
+        },
+      "value": false,
+      "hint": {
+        "en": "Keep device on.",
+        "no": "Forhindre at Homey slår av denne enheten."
+      }
+    }
+]
