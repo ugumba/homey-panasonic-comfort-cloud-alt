@@ -1,47 +1,77 @@
 import Homey from 'homey';
 import { ComfortCloudClient, TokenExpiredError } from 'panasonic-comfort-cloud-client';
 import { MyDevice } from './device';
+import { Mutex } from 'async-mutex';
+
+// From https://github.com/Magnusri/homey-panasonic-comfort-cloud-alt/blob/master/drivers/aircon/driver.ts
+// This is a workaround for using node-fetch in Homey apps
+// Ignore ts errors for this line
+// @ts-ignore
+const fetch = (...args: any) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 export class MyDriver extends Homey.Driver {
 
   client: ComfortCloudClient | null | undefined = undefined;
   ignoreSettings:boolean=false;
+  clientMutex:Mutex = new Mutex();
+
+  // From https://github.com/Magnusri/homey-panasonic-comfort-cloud-alt/blob/master/drivers/aircon/driver.ts
+  async getLatestAppVersion(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let appleAppId = "1348640525"; // ID of the Panasonic Comfort Cloud app on the Apple App Store
+      let url = "https://itunes.apple.com/lookup?id=" + appleAppId;
+      // Fetch the app details from the Apple App Store using node-fetch
+      fetch(url)
+        .then(response => response.json())
+        .then((data: any) => {
+          if (data.resultCount == 0) {
+            reject("No app found with ID " + appleAppId);
+          } else {
+            resolve(data.results[0].version);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 
   async getClient() : Promise<ComfortCloudClient> {
     if (this.client === undefined)
     {
-      let appVersion = "1.19.0";
-      this.log('initializing client ('+appVersion+')');
-      this.client = new ComfortCloudClient(appVersion);
-      let token:string = this.homey.settings.get("token");
-      if (!token || token.length == 0)
-      {
-        this.log('missing token');
-        const username:string = this.homey.settings.get("username");
-        const password:string = this.homey.settings.get("password");
-        if (!username || !password)
+      await this.clientMutex.runExclusive(async () => {
+        if (this.client === undefined)
         {
-          this.error('missing crdentials');
-          this.client = null;
-          throw new Error('Provide credentials in app settings.');
+          let appVersion = "1.21.0";
+          try {
+            appVersion = await this.getLatestAppVersion();
+          }
+          catch (e) {
+            this.error('pcc app version query to itunes failed', e);
+          }
+          this.log('initializing client ('+appVersion+')');
+          this.client = new ComfortCloudClient(appVersion);
+          const username:string = this.homey.settings.get("username");
+          const password:string = this.homey.settings.get("password");
+          if (!username || !password)
+          {
+            this.error('missing crdentials');
+            this.client = null;
+            throw new Error('Provide credentials in app settings.');
+          }
+          this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
+          try {
+            await this.client.login(username, password);
+            this.log('authenticated');
+          }
+          catch (e) {
+            this.error('login failed:', e);
+            this.client = null; 
+          }
         }
-        this.log('authenticating '+username.replace("@","[at]").replace(".","[dot]"));
-        try {
-          token = await this.client.login(username, password);
-          this.saveToken(token);
-          this.log('saved token');
-        }
-        catch (e) {
-          this.error('login failed:', e);
-          this.client = null; 
-        }
-      }
-      else {
-        this.client.token = token;
-        this.log('loaded token');
-      }
-    }
-    if (this.client === null)
+      });
+    };
+    if (this.client === null || this.client === undefined /*this shouldn't happen*/)
     {
       this.error('bad credentials');
       throw new Error('Authentication failed, edit credentials in app settings.');
@@ -74,17 +104,40 @@ export class MyDriver extends Homey.Driver {
   resetClient() {
     this.log('resetClient');
     this.client = undefined;
-    this.saveToken(null);
 
     this.getDevices()
       .forEach(device => (device as MyDevice).fetchAndRestartTimer());
   }
 
-  saveToken(token:string|null) {
-    this.ignoreSettings=true;
-    this.homey.settings.set("token", token);
-    this.ignoreSettings=false;
-  }
+  /**
+   * Method to register all device specific action flow cards
+   */
+    async initActionCards() {
+      const changeAirSwingLR = this.homey.flow.getActionCard('device-change-air-swing-leftright');
+      changeAirSwingLR.registerRunListener(async (args) => {
+        await args.device.postToService({ air_swing_lr: args.direction });
+      });
+
+      const changeAirSwingUD = this.homey.flow.getActionCard('device-change-air-swing-updown');
+      changeAirSwingUD.registerRunListener(async (args) => {
+        await args.device.postToService({ air_swing_ud: args.direction });
+      });
+
+      const changeEcoMode = this.homey.flow.getActionCard('device-change-eco-mode');
+      changeEcoMode.registerRunListener(async (args) => {
+        await args.device.postToService({ eco_mode: args.mode });
+      });
+
+      const changeFanSpeed = this.homey.flow.getActionCard('device-change-fan-speed');
+      changeFanSpeed.registerRunListener(async (args) => {
+        await args.device.postToService({ fan_speed: args.speed });
+      });
+
+      const changeOperationMode = this.homey.flow.getActionCard('device-change-operation-mode');
+      changeOperationMode.registerRunListener(async (args) => {
+        await args.device.postToService({ operation_mode: args.mode });
+      });
+    }
 
   /**
    * onInit is called when the driver is initialized.
@@ -103,6 +156,9 @@ export class MyDriver extends Homey.Driver {
       this.log('settings.unset');
       this.resetClient();
     });
+
+    // Register all device specific action flow cards
+    await this.initActionCards();
 
     this.log('Driver has been initialized');
   }

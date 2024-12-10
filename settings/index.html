@@ -71,7 +71,6 @@
           saveElement.textContent = "Saving...";
           Homey.set("username", usernameElement.value, handleError);
           Homey.set("password", passwordElement.value, handleError);
-          Homey.unset("token", handleError);
           saveElement.textContent = "Saved!";
           saveTimer = setTimeout(() => saveElement.textContent = "Authenticate", 1500);
         });

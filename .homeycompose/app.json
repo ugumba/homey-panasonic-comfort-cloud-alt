@@ -1,6 +1,6 @@
 {
   "id": "net.schmidt-cisternas.pcc-alt",
-  "version": "1.1.3",
+  "version": "1.1.14",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
