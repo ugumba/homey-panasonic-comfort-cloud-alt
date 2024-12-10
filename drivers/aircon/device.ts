@@ -13,6 +13,7 @@ export class MyDevice extends Homey.Device {
   id: string = this.getData().id;
   driver: MyDriver = this.driver as MyDriver;
   timer: NodeJS.Timer|null = null; 
+  alwaysOn: boolean = false;
 
   async setCap<T>(name:string, value:T) {
     let current = this.getCapabilityValue(name);
@@ -60,6 +61,11 @@ export class MyDevice extends Homey.Device {
 
   async postToService(values: {[x:string]:any}) {
     this.log('postToService:', values);
+    if (this.alwaysOn && values['onoff'] == Power.Off) {
+      // alwaysOn=true, so block transmitting Power.Off to device
+      this.log("  always on set -> block power off");
+      return;
+    }
     let params : Parameters = { 
       operate: getParam(values['onoff'], v => v ? Power.On : Power.Off), 
       temperatureSet: values['target_temperature'],
@@ -148,6 +154,9 @@ export class MyDevice extends Homey.Device {
     // TO BE DEPRECATED: Do not initialize action cards from the device (since devices::onInit is called for every device) but from drivers::onInit
     await this.initActionCards();
 
+    const settings = this.getSettings();
+    this.alwaysOn = settings.alwayson;
+
     this.log("Device '"+this.id+"' has been initialized");
   }
 
@@ -166,8 +175,16 @@ export class MyDevice extends Homey.Device {
    * @param {string[]} event.changedKeys An array of keys changed since the previous version
    * @returns {Promise<string|void>} return a custom message that will be displayed
    */
-  async onSettings({ oldSettings: {}, newSettings: {}, changedKeys: [] }): Promise<string|void> {
-    this.log('Device settings where changed');
+  async onSettings({oldSettings,newSettings,changedKeys,}: {
+    oldSettings: { [key: string]: boolean | string | number | undefined | null };
+    newSettings: { [key: string]: boolean | string | number | undefined | null };
+    changedKeys: string[];
+  }): Promise<string | void> {
+    this.log("Device settings changed: " + changedKeys.toString());
+    if (changedKeys.toString().includes('alwayson')) {
+      this.alwaysOn = Boolean(newSettings.alwayson);
+      this.log("    alwayson changed to: ", this.alwaysOn);
+    }
   }
 
   /**
