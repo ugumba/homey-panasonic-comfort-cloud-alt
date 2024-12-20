@@ -29,24 +29,20 @@ export class MyDevice extends Homey.Device {
     await this.setCapabilityValue(name, value);
   }
 
-  // Convert timezone from Homey format to "+01:00" format
-  getCurrentTimezoneOffset(timeZone: string) {
-    const date = new Date();
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      timeZone,
-      hourCycle: 'h23',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: 'longOffset',
-    });
-
-    const parts = formatter.formatToParts(date);
-    const offsetPart = parts.find(part => part.type === 'timeZoneName');
-    return offsetPart ? offsetPart.value.slice(3) : null;
+  // Getting the timezone offset in minutes
+  getOffset(timeZone: any = 'UTC', date: any = new Date()) {
+    const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const tzDate = new Date(date.toLocaleString('en-US', { timeZone }));
+    return (tzDate.getTime() - utcDate.getTime()) / 6e4;
+  }
+  
+  // Converting the offset minutes to hours in the format "+01:00"
+  minutesToHours(minutes: any) {
+    const positive = minutes >= 0;
+    minutes = Math.abs(minutes);
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${positive ? '+' : '-'}${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
   }
 
   // Fetch the last hour's power consumption in watts
@@ -56,7 +52,7 @@ export class MyDevice extends Homey.Device {
       return;
 
     // Get the timezone offset in the format "+01:00" with Europe/Oslo as default (Change this to some other default?)
-    let timeZone = this.getCurrentTimezoneOffset(this.homey.clock.getTimezone() || 'Europe/Oslo') || '+01:00';
+    let timeZone = this.minutesToHours(this.getOffset(this.homey.clock.getTimezone() || 'Europe/Oslo')) || '+01:00';
 
     // Get today's history data for the device
     let historyData = await client.getDeviceHistoryData(device.guid, new Date(), 0, timeZone);
