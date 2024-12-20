@@ -1,7 +1,5 @@
 # Panasonic Comfort Cloud Alternative
 
-IMPORTANT: [the current master branch is broken](https://community.homey.app/t/app-pro-panasonic-comfort-cloud-alternative/75906/203).  Please clone tag [1.1.11](https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/releases/tag/1.1.11) until further notice.
-
 This is an alternative unofficial [Homey](https://homey.app) app for controlling air conditioning and air-to-air heat pump devices via the [Panasonic Comfort Cloud](https://www.panasonic.com/global/hvac/air-conditioning/connectivity/comfort-cloud.html) service.
 Air-to-water (Aquarea) devices are *not* supported.
 
