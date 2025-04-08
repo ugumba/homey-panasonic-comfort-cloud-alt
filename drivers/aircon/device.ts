@@ -89,13 +89,22 @@ export class MyDevice extends Homey.Device {
     }
     await this.unsetWarning();
 
+    /* Values for airSwingLR from the device
+     * The value for RightMid is 5. The Enum thinks it is 3, so we map it to 3 until the enum in the library is fixed.
+     * Right: 1
+     * RightMid: 5
+     * Mid: 2
+     * LeftMid: 4
+     * Left: 0
+    */
+
     await this.setCap('onoff', device.operate == Power.On);
     await this.setCap('measure_temperature', device.insideTemperature);
     await this.setCap('measure_temperature_outside', device.outTemperature);
     await this.setCap('target_temperature', device.temperatureSet);
     await this.setCap('operation_mode', OperationMode[device.operationMode]);
     await this.setCap('eco_mode', EcoMode[device.ecoMode]);
-    await this.setCap('air_swing_lr', AirSwingLR[device.airSwingLR]);
+    await this.setCap('air_swing_lr', AirSwingLR[(device.airSwingLR as any) == 5 ? 3 : device.airSwingLR]); // See comment above
     await this.setCap('air_swing_ud', AirSwingUD[device.airSwingUD]);
     await this.setCap('fan_auto_mode', FanAutoMode[device.fanAutoMode]);
     await this.setCap('fan_speed', FanSpeed[device.fanSpeed]);
@@ -116,12 +125,13 @@ export class MyDevice extends Homey.Device {
       this.log("  always on set -> block power off");
       return;
     }
+    
     let params : Parameters = { 
       operate: getParam(values['onoff'], v => v ? Power.On : Power.Off), 
       temperatureSet: values['target_temperature'],
       operationMode: getParam(values['operation_mode'], v => OperationMode[v]),
       ecoMode: getParam(values['eco_mode'], v => EcoMode[v]),
-      airSwingLR: getParam(values['air_swing_lr'], v => AirSwingLR[v]),
+      airSwingLR: getParam(values['air_swing_lr'], v => (AirSwingLR[v] as any) == 3 ? 5 : AirSwingLR[v]), // See comment in fetchFromService on AirSwingLR
       airSwingUD: getParam(values['air_swing_ud'], v => AirSwingUD[v]),
       fanAutoMode: getParam(values['fan_auto_mode'], v => FanAutoMode[v]),
       fanSpeed: getParam(values['fan_speed'], v => FanSpeed[v]),
