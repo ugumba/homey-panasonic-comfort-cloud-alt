@@ -12,7 +12,9 @@ export class MyDevice extends Homey.Device {
 
   id: string = this.getData().id;
   driver: MyDriver = this.driver as MyDriver;
-  timer: NodeJS.Timer|null = null; 
+  fetchTimer: NodeJS.Timer|null = null; 
+  deferTimer: NodeJS.Timer|null = null;
+  deferredValues: {[x:string]:any} = {};
   alwaysOn: boolean = false;
 
   async setCap<T>(name:string, value:T) {
@@ -112,10 +114,10 @@ export class MyDevice extends Homey.Device {
   }
 
   async fetchAndRestartTimer() {
-    if (this.timer)
-      this.homey.clearInterval(this.timer);
+    if (this.fetchTimer)
+      this.homey.clearInterval(this.fetchTimer);
     await this.fetchFromService(true);
-    this.timer = this.homey.setInterval(() => this.fetchFromService(false), 60000);
+    this.fetchTimer = this.homey.setInterval(() => this.fetchFromService(false), 60000);
   }
 
   async postToService(values: {[x:string]:any}) {
@@ -150,32 +152,57 @@ export class MyDevice extends Homey.Device {
   }
 
   /**
+   * Called by flow card actions.  
+   * Capability values are accumulated in deferredValues.
+   * A debounce timer is started unless already running.
+   * When timer reaches 0, the timer is stopped, the accumulated values are copied and cleared, and sent to service.
+   * Debounce delay is longer than interactive use, since a flow is much more likely to spam.
+   * Interactive use can easily conflict with cards, especially with the differences in debounce delay - we make no attempt to resolve.
+   * The app UI will not reflect flow card changes until the next call to fetchFromService()!
+   */
+  async deferredPostToService(values: {[x:string]:any}) {
+    this.log('deferredPostToService:', values);
+    this.deferredValues = {...this.deferredValues, ...values};
+    if (!this.deferTimer)
+      this.deferTimer = this.homey.setInterval(
+        async () => {
+          this.homey.clearInterval(this.deferTimer);
+          this.deferTimer = null;
+          let postValues = {...this.deferredValues};
+          this.deferredValues = {};
+          await this.postToService({...postValues});
+        },
+        5000 // send to service at most 12 times per minute
+      );
+  }
+
+  /**
    * Method to collect all our action flow cards
    */
-  async initActionCards() {
+  initActionCards() {
     const changeAirSwingUD = this.homey.flow.getActionCard('change-air-swing-updown');
     changeAirSwingUD.registerRunListener(async (args) => {
-      await this.postToService({ air_swing_ud: args.direction });
+      await this.deferredPostToService({ air_swing_ud: args.direction });
     });
 
     const changeAirSwingLR = this.homey.flow.getActionCard('change-air-swing-leftright');
     changeAirSwingLR.registerRunListener(async (args) => {
-      await this.postToService({ air_swing_lr: args.direction });
+      await this.deferredPostToService({ air_swing_lr: args.direction });
     });
 
     const changeOperationMode = this.homey.flow.getActionCard('change-operation-mode');
     changeOperationMode.registerRunListener(async (args) => {
-      await this.postToService({ operation_mode: args.mode });
+      await this.deferredPostToService({ operation_mode: args.mode });
     });
 
     const changeFanSpeed = this.homey.flow.getActionCard('change-fan-speed');
     changeFanSpeed.registerRunListener(async (args) => {
-      await this.postToService({ fan_speed: args.speed });
+      await this.deferredPostToService({ fan_speed: args.speed });
     });
 
     const changeEcoMode = this.homey.flow.getActionCard('change-eco-mode');
     changeEcoMode.registerRunListener(async (args) => {
-      await this.postToService({ eco_mode: args.mode });
+      await this.deferredPostToService({ eco_mode: args.mode });
     });
 
   }
@@ -211,6 +238,7 @@ export class MyDevice extends Homey.Device {
         throw e;
     }
 
+    this.initActionCards();
     // TO BE DEPRECATED: Do not initialize action cards from the device (since devices::onInit is called for every device) but from drivers::onInit
     await this.initActionCards();
 
@@ -260,8 +288,10 @@ export class MyDevice extends Homey.Device {
    * onDeleted is called when the user deleted the device.
    */
   async onDeleted() {
-    if (this.timer)
-      this.homey.clearInterval(this.timer);
+    if (this.fetchTimer)
+      this.homey.clearInterval(this.fetchTimer);
+    if (this.deferTimer)
+      this.homey.clearInterval(this.deferTimer);
     this.log("Device '"+this.id+"' has been deleted");
   }
 
