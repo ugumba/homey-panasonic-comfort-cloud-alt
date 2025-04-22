@@ -1,6 +1,7 @@
 import Homey from 'homey';
 import { MyDriver } from './driver';
 import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device, ComfortCloudClient } from 'panasonic-comfort-cloud-client';
+import { Mutex } from 'async-mutex';
 
 function getParam(value:any, transform: (v:any) => any) : any {
   if (value === undefined)
@@ -14,6 +15,7 @@ export class MyDevice extends Homey.Device {
   driver: MyDriver = this.driver as MyDriver;
   timer: NodeJS.Timer|null = null; 
   alwaysOn: boolean = false;
+  fetchMutex:Mutex = new Mutex();
 
   async setCap<T>(name:string, value:T) {
     // Try adding the capability if it does not exist
@@ -112,10 +114,12 @@ export class MyDevice extends Homey.Device {
   }
 
   async fetchAndRestartTimer() {
-    if (this.timer)
-      this.homey.clearInterval(this.timer);
-    await this.fetchFromService(true);
-    this.timer = this.homey.setInterval(() => this.fetchFromService(false), 60000);
+    await this.fetchMutex.runExclusive(async () => {
+      if (this.timer)
+        this.homey.clearInterval(this.timer);
+      await this.fetchFromService(true);
+      this.timer = this.homey.setInterval(() => this.fetchFromService(false), 60000);
+    });
   }
 
   async postToService(values: {[x:string]:any}) {
