@@ -26,6 +26,8 @@ export class MyDevice extends Homey.Device {
     if (value == current)
       return;
     this.log("setCapabilityValue("+name+", "+value+")");
+    if (value === undefined)
+      return;
     await this.setCapabilityValue(name, value);
   }
 
@@ -99,6 +101,9 @@ export class MyDevice extends Homey.Device {
      * LeftMid: 4
      * Left: 0
     */
+    let airSwingLR = AirSwingLR[(device.airSwingLR as any) == 5 ? 3 : device.airSwingLR];
+    if (airSwingLR === undefined)
+      this.log("failed to parse airSwingLR value '"+device.airSwingLR+"'");
 
     await this.setCap('onoff', device.operate == Power.On);
     if (device.insideTemperature != 126)
@@ -107,7 +112,7 @@ export class MyDevice extends Homey.Device {
     await this.setCap('target_temperature', device.temperatureSet);
     await this.setCap('operation_mode', OperationMode[device.operationMode]);
     await this.setCap('eco_mode', EcoMode[device.ecoMode]);
-    await this.setCap('air_swing_lr', AirSwingLR[(device.airSwingLR as any) == 5 ? 3 : device.airSwingLR]); // See comment above
+    await this.setCap('air_swing_lr', airSwingLR); 
     await this.setCap('air_swing_ud', AirSwingUD[device.airSwingUD]);
     await this.setCap('fan_auto_mode', FanAutoMode[device.fanAutoMode]);
     await this.setCap('fan_speed', FanSpeed[device.fanSpeed]);
