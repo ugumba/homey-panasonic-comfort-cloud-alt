@@ -93,17 +93,13 @@ export class MyDevice extends Homey.Device {
     }
     await this.unsetWarning();
 
-    /* Values for airSwingLR from the device
-     * The value for RightMid is 5. The Enum thinks it is 3, so we map it to 3 until the enum in the library is fixed.
-     * Right: 1
-     * RightMid: 5
-     * Mid: 2
-     * LeftMid: 4
-     * Left: 0
-    */
-    let airSwingLR = AirSwingLR[(device.airSwingLR as any) == 5 ? 3 : device.airSwingLR];
-    if (airSwingLR === undefined)
-      this.log("failed to parse airSwingLR value '"+device.airSwingLR+"'");
+    let airSwingLR;
+    if ((device.airSwingLR as any) == 5)
+      airSwingLR = AirSwingLR.RightMid; // https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues/34
+    else if ((device.airSwingLR as any) == 6)
+      airSwingLR = AirSwingLR.Mid; // https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues/40
+    else 
+      airSwingLR = AirSwingLR[device.airSwingLR];
 
     await this.setCap('onoff', device.operate == Power.On);
     if (device.insideTemperature != 126)
@@ -112,7 +108,10 @@ export class MyDevice extends Homey.Device {
     await this.setCap('target_temperature', device.temperatureSet);
     await this.setCap('operation_mode', OperationMode[device.operationMode]);
     await this.setCap('eco_mode', EcoMode[device.ecoMode]);
-    await this.setCap('air_swing_lr', airSwingLR); 
+    if (airSwingLR === undefined)
+      this.log("failed to parse airSwingLR value '"+device.airSwingLR+"'");
+    else
+      await this.setCap('air_swing_lr', airSwingLR); 
     await this.setCap('air_swing_ud', AirSwingUD[device.airSwingUD]);
     await this.setCap('fan_auto_mode', FanAutoMode[device.fanAutoMode]);
     await this.setCap('fan_speed', FanSpeed[device.fanSpeed]);
