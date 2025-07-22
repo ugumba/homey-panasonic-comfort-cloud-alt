@@ -15,12 +15,20 @@
     "air_swing_lr",
     "air_swing_ud",
     "nanoe_mode",
-    "measure_avg_consumption_wh"
+    "measure_power",
+    "meter_power"
   ],
   "capabilitiesOptions": {
-    "measure_avg_consumption_wh": {
-      "approximated": true,
-      "preventTag": true
+    "measure_power": {
+      "approximated": true
+    },
+    "meter_power": {
+      "preventInsights": false
+    }
+  },
+  "energy": {
+    "approximation": {
+      "usageConstant": 100
     }
   },
   "platforms": [
