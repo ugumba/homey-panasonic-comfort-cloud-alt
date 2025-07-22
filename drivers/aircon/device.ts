@@ -65,8 +65,38 @@ export class MyDevice extends Homey.Device {
     // Get the consumption from the second last hour (the last hour is not complete yet)
     let consumption = historyWithData?.[historyWithData?.length - 2]?.consumption;
 
-    // Set the measure_avg_consumption_wh capability to the consumption in watts instead of kilowatts
-    this.setCap('measure_avg_consumption_wh', consumption * 1000);
+    // Set the measure_power capability to the consumption in watts instead of kilowatts
+    this.setCap('measure_power', consumption * 1000);
+    
+    // Update cumulative energy consumption for meter_power (kWh)
+    // Only add new hourly consumption data that hasn't been processed yet
+    const processedHours = this.getStoreValue('processedHours') || [];
+    const lastMeterValue = this.getStoreValue('lastMeterValue') || 0;
+    
+    let newConsumption = 0;
+    let newProcessedHours = [...processedHours];
+    const today = new Date().toDateString();
+    
+    // Process each hour's data and only add consumption for hours we haven't processed yet
+    for (let i = 0; i < historyWithData.length; i++) {
+      const hourData = historyWithData[i];
+      const hourKey = `${today}-${i}`;
+      
+      if (!processedHours.includes(hourKey) && hourData.consumption > 0) {
+        newConsumption += hourData.consumption;
+        newProcessedHours.push(hourKey);
+      }
+    }
+    
+    // Update meter_power and store processed hours if we have new consumption
+    if (newConsumption > 0) {
+      const newMeterValue = lastMeterValue + newConsumption;
+      this.setCap('meter_power', newMeterValue);
+      
+      // Store the updated state in device data
+      this.setStoreValue('processedHours', newProcessedHours);
+      this.setStoreValue('lastMeterValue', newMeterValue);
+    }
   }
   
   async fetchFromService(forced:boolean) {
@@ -123,7 +153,14 @@ export class MyDevice extends Homey.Device {
       if (this.timer)
         this.homey.clearInterval(this.timer);
       await this.fetchFromService(true);
-      this.timer = this.homey.setInterval(() => this.fetchFromService(false), 60000);
+      this.timer = this.homey.setInterval(async () => {
+        try {
+          await this.fetchFromService(false);
+        } catch (e) {
+          this.error("Timer-based fetchFromService failed:", e);
+          // Don't set warning here as it would spam the user
+        }
+      }, 60000);
     });
   }
 

@@ -81,17 +81,21 @@ export class MyDriver extends Homey.Driver {
   }
 
   async invokeClient<T>(request: (client: ComfortCloudClient) => Promise<T>) : Promise<T> {
-    while (true)
+    let retries = 0;
+    const maxRetries = 2;
+    
+    while (retries <= maxRetries)
     {
       let client = await this.getClient();
       try {
         return await request(client);
       }
       catch (e) {
-        if (e instanceof TokenExpiredError)
+        if (e instanceof TokenExpiredError && retries < maxRetries)
         {
-          this.log('invokeClient TokenExpiredError');
-          this.resetClient();
+          this.log('invokeClient TokenExpiredError (retry ' + (retries + 1) + ')');
+          this.resetClientOnly(); // Don't restart device timers, they'll retry naturally
+          retries++;
         }
         else
         {
@@ -99,11 +103,17 @@ export class MyDriver extends Homey.Driver {
         }
       }
     }
+    throw new Error('Max retries exceeded for authentication');
+  }
+
+  resetClientOnly() {
+    this.log('resetClientOnly');
+    this.client = undefined;
   }
 
   resetClient() {
     this.log('resetClient');
-    this.client = undefined;
+    this.resetClientOnly();
 
     this.getDevices()
       .forEach(device => (device as MyDevice).fetchAndRestartTimer());
