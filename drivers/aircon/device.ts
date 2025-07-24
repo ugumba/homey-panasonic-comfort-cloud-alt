@@ -53,6 +53,12 @@ export class MyDevice extends Homey.Device {
     if (!device)
       return;
 
+    // If the device is OFF, power consumption should be 0
+    if (device.operate !== Power.On) {
+      this.setCap('measure_power', 0);
+      return;
+    }
+
     // Get the timezone offset in the format "+01:00" with Europe/Oslo as default (Change this to some other default?)
     let timeZone = this.minutesToHours(this.getOffset(this.homey.clock.getTimezone() || 'Europe/Oslo')) || '+01:00';
 
@@ -65,8 +71,23 @@ export class MyDevice extends Homey.Device {
     // Get the consumption from the second last hour (the last hour is not complete yet)
     let consumption = historyWithData?.[historyWithData?.length - 2]?.consumption;
 
+    // Debug logging to understand what the API is returning
+    this.log("Device ON/OFF state:", device.operate === Power.On ? "ON" : "OFF");
+    this.log("API consumption data (kWh):", consumption);
+    this.log("Available history hours:", historyWithData.length);
+    if (historyWithData.length > 0) {
+      this.log("Last few hours consumption:", historyWithData.slice(-3).map((h: any) => h.consumption));
+    }
+
     // Set the measure_power capability to the consumption in watts instead of kilowatts
-    this.setCap('measure_power', consumption * 1000);
+    // But only if we have valid consumption data, otherwise set to 0
+    if (consumption !== undefined && consumption > 0) {
+      this.setCap('measure_power', consumption * 1000);
+      this.log("Setting power to:", consumption * 1000, "W");
+    } else {
+      this.setCap('measure_power', 0);
+      this.log("Setting power to: 0 W (no valid consumption data)");
+    }
     
     // Update cumulative energy consumption for meter_power (kWh)
     // Only add new hourly consumption data that hasn't been processed yet
