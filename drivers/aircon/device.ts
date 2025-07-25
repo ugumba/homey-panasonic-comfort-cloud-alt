@@ -47,17 +47,10 @@ export class MyDevice extends Homey.Device {
     return `${positive ? '+' : '-'}${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
   }
 
-  // Fetch the last hour's power consumption in watts
-  // This will register the consumption with one hour delay, as the last hour is not complete yet.
-  async fetchLastHourWattsConsumption(client: ComfortCloudClient, device: Device | null) {
+  // Fetch current power consumption and update energy tracking
+  async fetchPowerConsumption(client: ComfortCloudClient, device: Device | null) {
     if (!device)
       return;
-
-    // If the device is OFF, power consumption should be 0
-    if (device.operate !== Power.On) {
-      this.setCap('measure_power', 0);
-      return;
-    }
 
     // Get the timezone offset in the format "+01:00" with Europe/Oslo as default (Change this to some other default?)
     let timeZone = this.minutesToHours(this.getOffset(this.homey.clock.getTimezone() || 'Europe/Oslo')) || '+01:00';
@@ -68,14 +61,24 @@ export class MyDevice extends Homey.Device {
     // Filter out the -255 values, which are used to indicate hours that has not passed yet in the current day
     let historyWithData = historyData.historyDataList.filter((i: any) => i.consumption != -255);
 
-    // Get the consumption from the second last hour (the last hour is not complete yet)
-    let consumption = historyWithData?.[historyWithData?.length - 2]?.consumption;
+    // Always process energy consumption first (even if device is OFF to capture residual consumption)
+    await this.updateEnergyConsumption(historyWithData);
+
+    // Get the consumption from the current hour (last available data)
+    let consumption = historyWithData?.[historyWithData?.length - 1]?.consumption || 0;
+
+    // If the device is OFF, set current power to 0 but keep the energy tracking from above
+    if (device.operate !== Power.On) {
+      this.setCap('measure_power', 0);
+      return;
+    }
 
     // Set the measure_power capability to the consumption in watts instead of kilowatts
     this.setCap('measure_power', consumption * 1000);
-    
-    // Update cumulative energy consumption for meter_power (kWh)
-    // Only add new hourly consumption data that hasn't been processed yet
+  }
+
+  // Update cumulative energy consumption for meter_power (kWh)
+  async updateEnergyConsumption(historyWithData: any[]) {
     const processedHours = this.getStoreValue('processedHours') || [];
     const lastMeterValue = this.getStoreValue('lastMeterValue') || 0;
     
@@ -88,7 +91,8 @@ export class MyDevice extends Homey.Device {
       const hourData = historyWithData[i];
       const hourKey = `${today}-${i}`;
       
-      if (!processedHours.includes(hourKey) && hourData.consumption > 0) {
+      // Changed: removed the > 0 check to capture all consumption including small amounts
+      if (!processedHours.includes(hourKey) && hourData.consumption >= 0) {
         newConsumption += hourData.consumption;
         newProcessedHours.push(hourKey);
       }
@@ -112,8 +116,8 @@ export class MyDevice extends Homey.Device {
       device = await this.driver.invokeClient(async c => {
         let device = await c.getDevice(this.id);
 
-        // Fetch and set the last hour's power consumption
-        await this.fetchLastHourWattsConsumption(c, device);
+        // Fetch and set current power consumption and update energy tracking
+        await this.fetchPowerConsumption(c, device);
 
         return device;
       });
