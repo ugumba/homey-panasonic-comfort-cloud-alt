@@ -53,6 +53,12 @@ export class MyDevice extends Homey.Device {
     if (!device)
       return;
 
+    // If the device is OFF, power consumption should be 0
+    if (device.operate !== Power.On) {
+      this.setCap('measure_power', 0);
+      return;
+    }
+
     // Get the timezone offset in the format "+01:00" with Europe/Oslo as default (Change this to some other default?)
     let timeZone = this.minutesToHours(this.getOffset(this.homey.clock.getTimezone() || 'Europe/Oslo')) || '+01:00';
 
