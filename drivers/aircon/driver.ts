@@ -147,7 +147,7 @@ export class MyDriver extends Homey.Driver {
 
       const changeOperationMode = this.homey.flow.getActionCard('device-change-operation-mode');
       changeOperationMode.registerRunListener(async (args) => {
-        await args.device.postToService({ operation_mode: args.mode });
+        await args.device.postToService({ thermostat_mode: args.mode });
       });
       this.log("driver action cards have been initialized");
     }

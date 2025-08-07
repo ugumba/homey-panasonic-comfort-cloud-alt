@@ -562,19 +562,14 @@
       },
       "class": "thermostat",
       "capabilities": [
+        "meter_power",
+        "fan_speed",
+        "measure_power",
         "target_temperature",
         "measure_temperature",
         "measure_temperature_outside",
-        "onoff",
-        "operation_mode",
-        "eco_mode",
-        "fan_auto_mode",
-        "fan_speed",
-        "air_swing_lr",
-        "air_swing_ud",
-        "nanoe_mode",
-        "measure_power",
-        "meter_power"
+        "measure_temperature_inside",
+        "onoff"
       ],
       "capabilitiesOptions": {
         "measure_power": {
@@ -844,6 +839,40 @@
         "no": "Snitt W per time"
       }
     },
+    "measure_temperature": {
+      "type": "number",
+      "title": {
+        "en": "Inside Temperature",
+        "no": "Temperatur Inne"
+      },
+      "uiComponent": null,
+      "units": {
+        "en": "°C"
+      },
+      "icon": "assets/measure_temperature.svg",
+      "getable": true,
+      "setable": false,
+      "insights": false
+    },
+    "measure_temperature_inside": {
+      "type": "number",
+      "title": {
+        "en": "Inside Temperature",
+        "no": "Temperatur Inne"
+      },
+      "uiComponent": "sensor",
+      "units": {
+        "en": "°C"
+      },
+      "icon": "assets/measure_temperature.svg",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Temperature Inside",
+        "no": "Temperatur Inne"
+      }
+    },
     "measure_temperature_outside": {
       "type": "number",
       "title": {
@@ -904,7 +933,7 @@
         }
       ]
     },
-    "operation_mode": {
+    "thermostat_mode": {
       "type": "enum",
       "title": {
         "en": "Operation Mode"
@@ -914,31 +943,31 @@
       "setable": true,
       "values": [
         {
-          "id": "Auto",
+          "id": "auto",
           "title": {
             "en": "Auto"
           }
         },
         {
-          "id": "Dry",
+          "id": "dry",
           "title": {
             "en": "Dry"
           }
         },
         {
-          "id": "Cool",
+          "id": "cool",
           "title": {
             "en": "Cool"
           }
         },
         {
-          "id": "Heat",
+          "id": "heat",
           "title": {
             "en": "Heat"
           }
         },
         {
-          "id": "Fan",
+          "id": "fan",
           "title": {
             "en": "Fan"
           }

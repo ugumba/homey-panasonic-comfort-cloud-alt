@@ -1,8 +1,8 @@
 {
   "type": "number",
   "title": {
-    "en": "Outside Temperature",
-    "no": "Temperatur Ute"
+    "en": "Inside Temperature",
+    "no": "Temperatur Inne"
   },
   "uiComponent": "sensor",
   "units": { "en": "°C" },
@@ -11,7 +11,7 @@
   "setable": false,
   "insights": true,
   "insightsTitleTrue": {
-    "en": "Temperature Outside",
-    "no": "Temperatur Ute"
+    "en": "Temperature Inside",
+    "no": "Temperatur Inne"
   }
 }
