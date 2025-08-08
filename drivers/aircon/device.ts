@@ -133,13 +133,12 @@ export class MyDevice extends Homey.Device {
     }
     await this.unsetWarning();
 
-    let airSwingLR;
-    if ((device.airSwingLR as any) == 5)
-      airSwingLR = AirSwingLR.RightMid; // https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues/34
-    else if ((device.airSwingLR as any) == 6)
-      airSwingLR = AirSwingLR.Mid; // https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues/40
-    else 
-      airSwingLR = AirSwingLR[device.airSwingLR];
+    let airSwingLRcode = device.airSwingLR as any;
+    if (airSwingLRcode == 5)
+      airSwingLRcode = 3; // map to RightMid (https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues/34)
+    else if (airSwingLRcode == 6)
+      airSwingLRcode = 2; // map to Mid (https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/issues/40)
+    let airSwingLR = AirSwingLR[airSwingLRcode];
 
     await this.setCap('onoff', device.operate == Power.On);
     if (device.insideTemperature != 126)
