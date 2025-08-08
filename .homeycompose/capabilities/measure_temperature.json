@@ -1,0 +1,13 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Inside Temperature",
+    "no": "Temperatur Inne"
+  },
+  "uiComponent": null,
+  "units": { "en": "°C" },
+  "icon": "assets/measure_temperature.svg",
+  "getable": true,
+  "setable": false,
+  "insights": false
+}
