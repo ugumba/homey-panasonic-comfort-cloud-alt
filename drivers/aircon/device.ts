@@ -20,7 +20,7 @@ export class MyDevice extends Homey.Device {
   async setCap<T>(name:string, value:T) {
     // Try adding the capability if it does not exist
     if (!this.hasCapability(name)) {
-      this.addCapability(name);
+      await this.addCapability(name);
     }
     let current = this.getCapabilityValue(name);
     if (value == current)
