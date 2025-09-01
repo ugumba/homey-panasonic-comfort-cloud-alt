@@ -4,19 +4,14 @@
   },
   "class": "thermostat",
   "capabilities": [
+    "meter_power",
+    "fan_speed",
+    "measure_power",
     "target_temperature",
     "measure_temperature",
     "measure_temperature_outside",
-    "onoff",
-    "operation_mode",
-    "eco_mode",
-    "fan_auto_mode",
-    "fan_speed",
-    "air_swing_lr",
-    "air_swing_ud",
-    "nanoe_mode",
-    "measure_power",
-    "meter_power"
+    "measure_temperature_inside",
+    "onoff"
   ],
   "capabilitiesOptions": {
     "measure_power": {
@@ -46,7 +41,9 @@
     {
       "id": "list_my_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_my_devices" }
+      "navigation": {
+        "next": "add_my_devices"
+      }
     },
     {
       "id": "add_my_devices",
