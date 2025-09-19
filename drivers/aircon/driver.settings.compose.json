@@ -11,5 +11,20 @@
         "en": "Keep device on.",
         "no": "Forhindre at Homey slår av denne enheten."
       }
+    },
+    {
+      "id": "fetchinterval",
+      "type": "number",
+      "label": {
+        "en": "Poll interval (sec)",
+        "no": "Poll interval (sek)"
+        },
+      "value": 60,
+      "min": 60,
+      "max": 900,
+      "hint": {
+        "en": "Time (sec) between fetching device status.",
+        "no": "Tid (sek) mellom henting av device status."
+      }
     }
 ]
