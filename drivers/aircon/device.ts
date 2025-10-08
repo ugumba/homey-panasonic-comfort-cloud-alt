@@ -1,6 +1,6 @@
 import Homey from 'homey';
 import { MyDriver } from './driver';
-import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device, ComfortCloudClient } from 'panasonic-comfort-cloud-client';
+import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device, ComfortCloudClient, DataMode } from 'panasonic-comfort-cloud-client';
 import { Mutex } from 'async-mutex';
 
 function getParam(value:any, transform: (v:any) => any) : any {
@@ -57,7 +57,7 @@ export class MyDevice extends Homey.Device {
     let timeZone = this.minutesToHours(this.getOffset(this.homey.clock.getTimezone() || 'Europe/Oslo')) || '+01:00';
 
     // Get today's history data for the device
-    let historyData = await client.getDeviceHistoryData(device.guid, new Date(), 0, timeZone);
+    let historyData = await client.getDeviceHistoryData(device.guid, new Date(), DataMode.Day, timeZone);
     
     // Filter out the -255 values, which are used to indicate hours that has not passed yet in the current day
     let historyWithData = historyData.historyDataList.filter((i: any) => i.consumption != -255);
