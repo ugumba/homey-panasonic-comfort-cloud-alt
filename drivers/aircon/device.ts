@@ -1,6 +1,14 @@
 import Homey from 'homey';
 import { MyDriver } from './driver';
 import { Power, Parameters, OperationMode, EcoMode, AirSwingLR, AirSwingUD, FanAutoMode, FanSpeed, NanoeMode, Device, ComfortCloudClient } from 'panasonic-comfort-cloud-client';
+
+// Import DataMode only if available (for backward compatibility with older versions)
+let DataMode: any = null;
+try {
+  DataMode = require('panasonic-comfort-cloud-client').DataMode;
+} catch (e) {
+  // DataMode not available in older versions, will use fallback value
+}
 import { Mutex } from 'async-mutex';
 
 function getParam(value:any, transform: (v:any) => any) : any {
@@ -56,8 +64,13 @@ export class MyDevice extends Homey.Device {
     // Get the timezone offset in the format "+01:00" with Europe/Oslo as default (Change this to some other default?)
     let timeZone = this.minutesToHours(this.getOffset(this.homey.clock.getTimezone() || 'Europe/Oslo')) || '+01:00';
 
-    // Get today's history data for the device
-    let historyData = await client.getDeviceHistoryData(device.guid, new Date(), 0, timeZone);
+    // Get today's history data for the device - check if method exists for backward compatibility
+    if (typeof (client as any).getDeviceHistoryData !== 'function') {
+      this.log('getDeviceHistoryData not available in this version of panasonic-comfort-cloud-client. Power consumption tracking disabled.');
+      return;
+    }
+
+    let historyData = await (client as any).getDeviceHistoryData(device.guid, new Date(), DataMode?.Day || 0, timeZone);
     
     // Filter out the -255 values, which are used to indicate hours that has not passed yet in the current day
     let historyWithData = historyData.historyDataList.filter((i: any) => i.consumption != -255);
