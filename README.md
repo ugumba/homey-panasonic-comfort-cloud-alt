@@ -24,7 +24,7 @@ Currently, the only option is to install the app manually from a PC:
   1. set up the [Homey CLI](https://apps.developer.homey.app/the-basics/getting-started/homey-cli) (also make sure you keep it up to date),
   2. authenticate with ```homey login``` and select your Homey,
   3. ```git clone https://github.com/ugumba/homey-panasonic-comfort-cloud-alt.git``` or install it manually
-  4. run ```npm install``` in your cloned repo folder (this downloads dependencies required by the app),
+  4. run ```npm ci``` in your cloned repo folder (this downloads dependencies required by the app),
   5. run ```homey app install``` in your cloned repo folder (this installs the app on your Homey).
 
 The app has not been through any kind of QA beyond myself and a few users testing it.  Having said that, it's been running stable for me for a long time.
