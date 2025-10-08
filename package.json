@@ -17,7 +17,7 @@
   "dependencies": {
     "async-mutex": "0.5.0",
     "node-fetch": "2.6.1",
-    "panasonic-comfort-cloud-client": "^2.1.0",
+    "panasonic-comfort-cloud-client": "2.1.0",
     "cheerio": "1.0.0-rc.12"
   }
 }
