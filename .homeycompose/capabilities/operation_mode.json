@@ -6,23 +6,23 @@
     "setable": true,
     "values": [
         {
-            "id": "auto",
+            "id": "Auto",
             "title": { "en": "Auto"}
         },
         {
-            "id": "dry",
+            "id": "Dry",
             "title": { "en": "Dry"}
         },
         {
-            "id": "cool",
+            "id": "Cool",
             "title": { "en": "Cool"}
         },
         {
-            "id": "heat",
+            "id": "Heat",
             "title": { "en": "Heat"}
         },
         {
-            "id": "fan",
+            "id": "Fan",
             "title": { "en": "Fan"}
         }
     ]
