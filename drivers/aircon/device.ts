@@ -148,7 +148,7 @@ export class MyDevice extends Homey.Device {
     }
     await this.setCap('measure_temperature_outside', device.outTemperature);
     await this.setCap('target_temperature', device.temperatureSet);
-    await this.setCap('thermostat_mode', OperationMode[device.operationMode].toLowerCase());
+    await this.setCap('operation_mode', OperationMode[device.operationMode]);
     await this.setCap('eco_mode', EcoMode[device.ecoMode]);
     if (airSwingLR === undefined)
       this.log("failed to parse airSwingLR value '"+device.airSwingLR+"'");
@@ -187,8 +187,7 @@ export class MyDevice extends Homey.Device {
     let params : Parameters = { 
       operate: getParam(values['onoff'], v => v ? Power.On : Power.Off), 
       temperatureSet: values['target_temperature'],
-      // Uppercase first letter to match the enum values in ComfortCloudClient
-      operationMode: getParam(values['thermostat_mode'], v => OperationMode[v.charAt(0).toUpperCase() + v.slice(1)]),
+      operationMode: getParam(values['operation_mode'], v => OperationMode[v]),
       ecoMode: getParam(values['eco_mode'], v => EcoMode[v]),
       airSwingLR: getParam(values['air_swing_lr'], v => (AirSwingLR[v] as any) == 3 ? 5 : AirSwingLR[v]), // See comment in fetchFromService on AirSwingLR
       airSwingUD: getParam(values['air_swing_ud'], v => AirSwingUD[v]),
@@ -224,7 +223,7 @@ export class MyDevice extends Homey.Device {
 
     const changeOperationMode = this.homey.flow.getActionCard('change-operation-mode');
     changeOperationMode.registerRunListener(async (args) => {
-      await this.postToService({ thermostat_mode: args.mode });
+      await this.postToService({ operation_mode: args.mode });
     });
 
     const changeFanSpeed = this.homey.flow.getActionCard('change-fan-speed');
@@ -248,7 +247,7 @@ export class MyDevice extends Homey.Device {
       [
         'onoff',
         'target_temperature',
-        'thermostat_mode',
+        'operation_mode',
         'eco_mode',
         'air_swing_lr',
         'air_swing_ud',
