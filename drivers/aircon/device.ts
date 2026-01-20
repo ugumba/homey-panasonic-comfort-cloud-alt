@@ -150,6 +150,25 @@ export class MyDevice extends Homey.Device {
     await this.setCap('measure_temperature_outside', device.outTemperature);
     await this.setCap('target_temperature', device.temperatureSet);
     await this.setCap('operation_mode', OperationMode[device.operationMode]);
+    // Keep thermostat_mode in sync with operation_mode
+    switch (device.operationMode) {
+      case OperationMode.Auto:
+        await this.setCap('thermostat_mode', "auto");
+        break;
+      case OperationMode.Dry:
+        await this.setCap('thermostat_mode', "heat");
+        break;
+      case OperationMode.Heat:
+        await this.setCap('thermostat_mode', "heat");
+        break;
+      case OperationMode.Cool:
+        await this.setCap('thermostat_mode', "cool");
+        break;
+      case OperationMode.Fan:
+        await this.setCap('thermostat_mode', "off");
+        break;
+      default:
+    }
     await this.setCap('eco_mode', EcoMode[device.ecoMode]);
     if (airSwingLR === undefined)
       this.log("failed to parse airSwingLR value '"+device.airSwingLR+"'");
@@ -236,6 +255,27 @@ export class MyDevice extends Homey.Device {
     await this.fetchAndRestartTimer();
   }
 
+  async thermostatMode(value: string) {
+    // Keep operation_mode in sync with thermostat_mode
+    this.log('thermostatMode value changed to:', value);
+    switch (value) {
+      case "auto":
+        await this.postToService({ operation_mode: "Auto" });
+        break;
+      case "heat":
+        await this.postToService({ operation_mode: "Heat" });
+        break;
+      case "cool":
+        await this.postToService({ operation_mode: "Cool" });
+        break;
+      case "off":
+        await this.postToService({ operation_mode: "Fan" });
+        break;
+      default:
+        this.log('thermostatMode value unknown:', value);
+    }
+  }
+
   /**
    * Method to collect all our action flow cards
    */
@@ -286,6 +326,11 @@ export class MyDevice extends Homey.Device {
       ],
       values => this.postToService(values),
       3000
+    );
+
+    this.registerCapabilityListener(
+      'thermostat_mode',
+      value => this.thermostatMode(value)
     );
 
     const settings = this.getSettings();
