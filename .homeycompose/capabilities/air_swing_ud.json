@@ -1,29 +1,29 @@
 {
     "type": "enum",
-    "title": { "en": "Air Swing UD" },
+    "title": { "en": "Air Swing UD", "no": "Luftsving Opp/Ned" },
     "uiComponent": "picker",
     "getable": true,
     "setable": true,
     "values": [
         {
             "id": "Up",
-            "title": { "en": "Up"}
+            "title": { "en": "Up", "no": "Opp" }
         },
         {
             "id": "UpMid",
-            "title": { "en": "UpMid"}
+            "title": { "en": "UpMid", "no": "Opp Midt" }
         },
         {
             "id": "Mid",
-            "title": { "en": "Mid"}
+            "title": { "en": "Mid", "no": "Midt" }
         },
         {
             "id": "DownMid",
-            "title": { "en": "DownMid"}
+            "title": { "en": "DownMid", "no": "Ned Midt" }
         },
         {
             "id": "Down",
-            "title": { "en": "Down"}
+            "title": { "en": "Down", "no": "Ned" }
         }
     ]
   }

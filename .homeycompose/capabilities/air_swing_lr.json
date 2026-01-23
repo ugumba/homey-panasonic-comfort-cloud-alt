@@ -1,29 +1,29 @@
 {
     "type": "enum",
-    "title": { "en": "Air Swing LR" },
+    "title": { "en": "Air Swing LR", "no": "Luftsving Venstre/Høyre" },
     "uiComponent": "picker",
     "getable": true,
     "setable": true,
     "values": [
         {
             "id": "Left",
-            "title": { "en": "Left"}
+            "title": { "en": "Left", "no": "Venstre" }
         },
         {
             "id": "LeftMid",
-            "title": { "en": "LeftMid"}
+            "title": { "en": "LeftMid", "no": "Venstre Midt" }
         },
         {
             "id": "Mid",
-            "title": { "en": "Mid"}
+            "title": { "en": "Mid", "no": "Midt" }
         },
         {
             "id": "RightMid",
-            "title": { "en": "RightMid"}
+            "title": { "en": "RightMid", "no": "Høyre Midt" }
         },
         {
             "id": "Right",
-            "title": { "en": "Right"}
+            "title": { "en": "Right", "no": "Høyre" }
         }
     ]
   }

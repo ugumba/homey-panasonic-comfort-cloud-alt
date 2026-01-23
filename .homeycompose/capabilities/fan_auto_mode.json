@@ -1,25 +1,25 @@
 {
     "type": "enum",
-    "title": { "en": "Fan Auto Mode" },
+    "title": { "en": "Fan Auto Mode", "no": "Vifte modus" },
     "uiComponent": "picker",
     "getable": true,
     "setable": true,
     "values": [
         {
             "id": "Disabled",
-            "title": { "en": "Disabled"}
+            "title": { "en": "Disabled", "no": "Deaktivert" }
         },
         {
             "id": "AirSwingAuto",
-            "title": { "en": "AirSwingAuto"}
+            "title": { "en": "AirSwingAuto", "no": "Luftsving Automatisk" }
         },
         {
             "id": "AirSwingLR",
-            "title": { "en": "AirSwingLR"}
+            "title": { "en": "AirSwingLR", "no": "Luftsving Venstre-Høyre" }
         },
         {
             "id": "AirSwingUD",
-            "title": { "en": "AirSwingUD"}
+            "title": { "en": "AirSwingUD", "no": "Luftsving Opp-Ned" }
         }
     ]
   }

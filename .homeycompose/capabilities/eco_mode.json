@@ -1,21 +1,21 @@
 {
     "type": "enum",
-    "title": { "en": "Eco Mode" },
+    "title": { "en": "Eco Mode", "no": "Ecomodus" },
     "uiComponent": "picker",
     "getable": true,
     "setable": true,
     "values": [
         {
             "id": "Auto",
-            "title": { "en": "Auto"}
+            "title": { "en": "Auto", "no": "Automatisk" }
         },
         {
             "id": "Powerful",
-            "title": { "en": "Powerful"}
+            "title": { "en": "Powerful", "no": "Kraftfull" }
         },
         {
             "id": "Quiet",
-            "title": { "en": "Quiet"}
+            "title": { "en": "Quiet", "no": "Stille" }
         }
     ]
   }

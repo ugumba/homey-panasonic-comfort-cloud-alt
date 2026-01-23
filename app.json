@@ -723,7 +723,8 @@
     "air_swing_lr": {
       "type": "enum",
       "title": {
-        "en": "Air Swing LR"
+        "en": "Air Swing LR",
+        "no": "Luftsving Venstre/Høyre"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -732,31 +733,36 @@
         {
           "id": "Left",
           "title": {
-            "en": "Left"
+            "en": "Left",
+            "no": "Venstre"
           }
         },
         {
           "id": "LeftMid",
           "title": {
-            "en": "LeftMid"
+            "en": "LeftMid",
+            "no": "Venstre Midt"
           }
         },
         {
           "id": "Mid",
           "title": {
-            "en": "Mid"
+            "en": "Mid",
+            "no": "Midt"
           }
         },
         {
           "id": "RightMid",
           "title": {
-            "en": "RightMid"
+            "en": "RightMid",
+            "no": "Høyre Midt"
           }
         },
         {
           "id": "Right",
           "title": {
-            "en": "Right"
+            "en": "Right",
+            "no": "Høyre"
           }
         }
       ]
@@ -764,7 +770,8 @@
     "air_swing_ud": {
       "type": "enum",
       "title": {
-        "en": "Air Swing UD"
+        "en": "Air Swing UD",
+        "no": "Luftsving Opp/Ned"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -773,31 +780,36 @@
         {
           "id": "Up",
           "title": {
-            "en": "Up"
+            "en": "Up",
+            "no": "Opp"
           }
         },
         {
           "id": "UpMid",
           "title": {
-            "en": "UpMid"
+            "en": "UpMid",
+            "no": "Opp Midt"
           }
         },
         {
           "id": "Mid",
           "title": {
-            "en": "Mid"
+            "en": "Mid",
+            "no": "Midt"
           }
         },
         {
           "id": "DownMid",
           "title": {
-            "en": "DownMid"
+            "en": "DownMid",
+            "no": "Ned Midt"
           }
         },
         {
           "id": "Down",
           "title": {
-            "en": "Down"
+            "en": "Down",
+            "no": "Ned"
           }
         }
       ]
@@ -805,7 +817,8 @@
     "eco_mode": {
       "type": "enum",
       "title": {
-        "en": "Eco Mode"
+        "en": "Eco Mode",
+        "no": "Ecomodus"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -814,19 +827,22 @@
         {
           "id": "Auto",
           "title": {
-            "en": "Auto"
+            "en": "Auto",
+            "no": "Automatisk"
           }
         },
         {
           "id": "Powerful",
           "title": {
-            "en": "Powerful"
+            "en": "Powerful",
+            "no": "Kraftfull"
           }
         },
         {
           "id": "Quiet",
           "title": {
-            "en": "Quiet"
+            "en": "Quiet",
+            "no": "Stille"
           }
         }
       ]
@@ -834,7 +850,8 @@
     "fan_auto_mode": {
       "type": "enum",
       "title": {
-        "en": "Fan Auto Mode"
+        "en": "Fan Auto Mode",
+        "no": "Vifte modus"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -843,25 +860,29 @@
         {
           "id": "Disabled",
           "title": {
-            "en": "Disabled"
+            "en": "Disabled",
+            "no": "Deaktivert"
           }
         },
         {
           "id": "AirSwingAuto",
           "title": {
-            "en": "AirSwingAuto"
+            "en": "AirSwingAuto",
+            "no": "Luftsving Automatisk"
           }
         },
         {
           "id": "AirSwingLR",
           "title": {
-            "en": "AirSwingLR"
+            "en": "AirSwingLR",
+            "no": "Luftsving Venstre-Høyre"
           }
         },
         {
           "id": "AirSwingUD",
           "title": {
-            "en": "AirSwingUD"
+            "en": "AirSwingUD",
+            "no": "Luftsving Opp-Ned"
           }
         }
       ]
@@ -869,7 +890,8 @@
     "fan_speed": {
       "type": "enum",
       "title": {
-        "en": "Fan Speed"
+        "en": "Fan Speed",
+        "no": "Viftehastighet"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -878,37 +900,43 @@
         {
           "id": "Auto",
           "title": {
-            "en": "Auto"
+            "en": "Auto",
+            "no": "Automatisk"
           }
         },
         {
           "id": "Low",
           "title": {
-            "en": "Low"
+            "en": "Low",
+            "no": "Lav"
           }
         },
         {
           "id": "LowMid",
           "title": {
-            "en": "LowMid"
+            "en": "LowMid",
+            "no": "Lav Medium"
           }
         },
         {
           "id": "Mid",
           "title": {
-            "en": "Mid"
+            "en": "Mid",
+            "no": "Medium"
           }
         },
         {
           "id": "HighMid",
           "title": {
-            "en": "HighMid"
+            "en": "HighMid",
+            "no": "Medium Høy"
           }
         },
         {
           "id": "High",
           "title": {
-            "en": "High"
+            "en": "High",
+            "no": "Høy"
           }
         }
       ]
@@ -988,7 +1016,8 @@
     "nanoe_mode": {
       "type": "enum",
       "title": {
-        "en": "Nanoe Mode"
+        "en": "Nanoe Mode",
+        "no": "Nanomodus"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -997,19 +1026,22 @@
         {
           "id": "Unavailable",
           "title": {
-            "en": "Unavailable"
+            "en": "Unavailable",
+            "no": "Utilgjengelig"
           }
         },
         {
           "id": "Off",
           "title": {
-            "en": "Off"
+            "en": "Off",
+            "no": "Av"
           }
         },
         {
           "id": "On",
           "title": {
-            "en": "On"
+            "en": "On",
+            "no": "På"
           }
         },
         {
@@ -1021,7 +1053,8 @@
         {
           "id": "All",
           "title": {
-            "en": "All"
+            "en": "All",
+            "no": "Alt"
           }
         }
       ]
@@ -1029,7 +1062,8 @@
     "operation_mode": {
       "type": "enum",
       "title": {
-        "en": "Operation Mode"
+        "en": "Operation Mode",
+        "no": "Driftsmodus"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -1038,31 +1072,36 @@
         {
           "id": "Auto",
           "title": {
-            "en": "Auto"
+            "en": "Auto",
+            "no": "Automatisk"
           }
         },
         {
           "id": "Dry",
           "title": {
-            "en": "Dry"
+            "en": "Dry",
+            "no": "Tørr"
           }
         },
         {
           "id": "Cool",
           "title": {
-            "en": "Cool"
+            "en": "Cool",
+            "no": "Kjøling"
           }
         },
         {
           "id": "Heat",
           "title": {
-            "en": "Heat"
+            "en": "Heat",
+            "no": "Varme"
           }
         },
         {
           "id": "Fan",
           "title": {
-            "en": "Fan"
+            "en": "Fan",
+            "no": "Vifte"
           }
         }
       ]
