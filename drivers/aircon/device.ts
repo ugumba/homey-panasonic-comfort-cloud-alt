@@ -17,6 +17,7 @@ export class MyDevice extends Homey.Device {
   alwaysOn: boolean = false;
   fetchMutex:Mutex = new Mutex();
   fetchinterval: number = 60;
+  transmitOnlyIfChanged: boolean = false;
 
   async setCap<T>(name:string, value:T) {
     // Try adding the capability if it does not exist
@@ -195,6 +196,34 @@ export class MyDevice extends Homey.Device {
       fanSpeed: getParam(values['fan_speed'], v => FanSpeed[v]),
       actualNanoe: getParam(values['nanoe_mode'], v => NanoeMode[v])
     };
+
+    if (this.transmitOnlyIfChanged) {
+      // Retrieve current device state so we can compare
+      let currentDevice: Device | null = null;
+      try {
+        currentDevice = await this.driver.invokeClient(c => c.getDevice(this.id));
+      } catch (e) {
+        this.error('failed to fetch current device in postToService', e);
+      }
+
+      // If we managed to retrieve the current device, skip the call when nothing changed
+      if (currentDevice) {
+        const sameOperate = params.operate === undefined || params.operate === currentDevice.operate;
+        const sameTemp = params.temperatureSet === undefined || params.temperatureSet === currentDevice.temperatureSet;
+        const sameOpMode = params.operationMode === undefined || params.operationMode === currentDevice.operationMode;
+        const sameEco = params.ecoMode === undefined || params.ecoMode === currentDevice.ecoMode;
+        const sameSwingLR = params.airSwingLR === undefined || params.airSwingLR === currentDevice.airSwingLR;
+        const sameSwingUD = params.airSwingUD === undefined || params.airSwingUD === currentDevice.airSwingUD;
+        const sameFanAuto = params.fanAutoMode === undefined || params.fanAutoMode === currentDevice.fanAutoMode;
+        const sameFanSpeed = params.fanSpeed === undefined || params.fanSpeed === currentDevice.fanSpeed;
+        const sameNanoe = params.actualNanoe === undefined || params.actualNanoe === currentDevice.nanoe;
+
+        if (sameOperate && sameTemp && sameOpMode && sameEco && sameSwingLR && sameSwingUD && sameFanAuto && sameFanSpeed && sameNanoe) {
+          this.log('postToService: no change from current device state. Transmit to device blocked');
+          return;
+        }
+      }
+    }
     try {
       await this.driver.invokeClient(c => c.setParameters(this.id, params));
     }
@@ -262,6 +291,7 @@ export class MyDevice extends Homey.Device {
     const settings = this.getSettings();
     this.alwaysOn = settings.alwayson;
     this.fetchinterval = settings.fetchinterval;
+    this.transmitOnlyIfChanged = settings.transmitonlyifchanged;
 
     try {
       await this.fetchAndRestartTimer();
@@ -313,6 +343,10 @@ export class MyDevice extends Homey.Device {
     if (changedKeys.toString().includes('fetchinterval')) {
       this.fetchinterval = Number(newSettings.fetchinterval);
       this.log("    fetchinterval changed to: ", this.fetchinterval);
+    }
+    if (changedKeys.toString().includes('transmitonlyifchanged')) {
+      this.transmitOnlyIfChanged = Boolean(newSettings.transmitonlyifchanged);
+      this.log("    transmitonlyifchanged changed to: ", this.transmitOnlyIfChanged);
     }
   }
 

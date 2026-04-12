@@ -47,11 +47,44 @@ The settings page shows the most recent log contents.  If you have a problem, pl
 
 The log contains the user name (somewhat obfuscated) and PCC device names and IDs (but never the password, obviously).
 
+# Changelog
+
+### 1.1.22 (2026-03-23)
+  * Added per device option to block transmitting to the Panasonic API parameter values that havn't changed compared to state stored in the Homey to reduce load on the Panasonic API (Jarl)
+  * Added operation mode 'when' flow card (Jarl)
+### 1.1.21 (2025-12-10)
+  * Switch back to using custom "operation mode" capability instead of the built-in capability "thermostat mode" for a "climate" type Homey APP in order to support "dry" mode for the Panasonic heat pump (Jarl)
+### 1.1.20 (2025-09-19)
+  * Added configurable poll intervall (60 - 900 sec) per device to reduce traffic on the Panasonic API and thus reduce likelihood of rate limiting due to excessive traffic (Jarl)
+  * Switch from custom "operation mode" capability to built-in capability "thermostat mode" (Magnus)
+  * Added support for inside temperature (Magnus)
+### 1.1.19 (2025-08-05)
+  * Make sure action cards are registered only once in case of multiple devices (Jarl)
+  * Added support for power consumption calculation (Daniel)
+### 1.1.18 (2025-07-02)
+  * Added mapping of strange airswing LR value 6 from Panasonic API to MID position (Robert)
+### 1.1.17 (2025-07-01)
+  * Added diagnostic logging for unknown airswing LR values received from the Panasonic API (Robert)
+### 1.1.16 (2025-05-12)
+  * Fix for (ignore) invalid inside temperature "126" received from API (Robert)
+### 1.1.15 (2025-04-22)
+  * Workaround: Added mapping for RightMid LR air swing which is 3 in the AirSwingLR enum in the API client but 5 in the Panasonic API (Magnus)
+  * Added mutex in fetchAndRestartTimer() to avoid race condition that could result in multiple timers being created and thus multiple/lots of poll requests on the Panasonic API resulting in possible rate-limiting (Jarl)
+### 1.1.14 (2024-12-20)
+  * Fix dependencies. Use "panasonic-comfort-cloud-client" v2.1.0 (Robert)
+  * Fix time offset conversion to support Node12 (Magnus)
+### 1.1.13 (2024-12-10)
+  * Added support for average powerconsuption per hour and outside temperature (Magnus)
+### 1.1.12 (2024-12-10)
+  * Added per device option for AlwaysOn (Jarl)
+
+
 # Credits
 
   * [Jarl Larsen](https://github.com/jarll) for fixing per-device action cards and adding alwayson support
   * [Magnus Rydjord](https://github.com/Magnusri) for PCC app version autodetection code, outdoor temp and avg W consumption
   * [Nick Murison](https://github.com/nickmurison) for [adding more flow cards](https://github.com/ugumba/homey-panasonic-comfort-cloud-alt/pull/7).
+  * [Daniel Heimburg](https://github.com/danielheimburg) for adding support for power consumption calculation
   * Vegard Svendsen for [the original Homey app](https://homey.app/en-us/app/com.panasonic.PCC/Panasonic-Comfort-Cloud/).
   * The app relies heavily on [panasonic-comfort-cloud-client](https://github.com/marc2016/panasonic-comfort-cloud-client).  The main reason I got the app working within a couple of hours!
   * Athom provides an easy to use [CLI, SDK and app template](https://apps.developer.homey.app/the-basics/getting-started/homey-cli).  The combined quality ensured I hit the ground running.
