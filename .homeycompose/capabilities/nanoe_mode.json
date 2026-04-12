@@ -1,21 +1,21 @@
 {
     "type": "enum",
-    "title": { "en": "Nanoe Mode" },
+    "title": { "en": "Nanoe Mode", "no": "Nanomodus" },
     "uiComponent": "picker",
     "getable": true,
     "setable": true,
     "values": [
         {
             "id": "Unavailable",
-            "title": { "en": "Unavailable"}
+            "title": { "en": "Unavailable", "no": "Utilgjengelig" }
         },
         {
             "id": "Off",
-            "title": { "en": "Off"}
+            "title": { "en": "Off", "no": "Av" }
         },
         {
             "id": "On",
-            "title": { "en": "On"}
+            "title": { "en": "On", "no": "På" }
         },
         {
             "id": "ModeG",
@@ -23,7 +23,7 @@
         },
         {
             "id": "All",
-            "title": { "en": "All"}
+            "title": { "en": "All", "no": "Alt" }
         }
     ]
   }

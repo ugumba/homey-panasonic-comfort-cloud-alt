@@ -1,29 +1,29 @@
 {
     "type": "enum",
-    "title": { "en": "Operation Mode" },
+    "title": { "en": "Operation Mode", "no": "Driftsmodus" },
     "uiComponent": "picker",
     "getable": true,
     "setable": true,
     "values": [
         {
             "id": "Auto",
-            "title": { "en": "Auto"}
+            "title": { "en": "Auto", "no": "Automatisk" }
         },
         {
             "id": "Dry",
-            "title": { "en": "Dry"}
+            "title": { "en": "Dry", "no": "Tørr" }
         },
         {
             "id": "Cool",
-            "title": { "en": "Cool"}
+            "title": { "en": "Cool", "no": "Kjøling" }
         },
         {
             "id": "Heat",
-            "title": { "en": "Heat"}
+            "title": { "en": "Heat", "no": "Varme" }
         },
         {
             "id": "Fan",
-            "title": { "en": "Fan"}
+            "title": { "en": "Fan", "no": "Vifte" }
         }
     ]
   }
