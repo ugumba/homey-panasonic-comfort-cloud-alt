@@ -3,13 +3,16 @@
     {
       "id": "device-change-air-swing-leftright",
       "title": {
-        "en": "Change Air Swing Left/Right"
+        "en": "Change Air Swing Left/Right",
+        "no": "Endre luftsving venstre/høyre"
       },
       "titleFormatted": {
-        "en": "Change Air Swing Left/Right to [[direction]]"
+        "en": "Change Air Swing Left/Right to [[direction]]",
+        "no": "Endre luftsving venstre/høyre til [[direction]]"
       },
       "hint": {
-        "en": "Choose air direction left/right"
+        "en": "Choose air direction left/right",
+        "no": "Velg luftretning venstre/høyre"
       },
       "args": [
         {
@@ -19,31 +22,31 @@
             {
               "id": "Left",
               "label": {
-                "en": "Left"
+                "en": "Left", "no": "Venstre"
               }
             },
             {
               "id": "LeftMid",
               "label": {
-                "en": "LeftMid"
+                "en": "LeftMid", "no": "Venstre Midt"
               }
             },
             {
               "id": "Mid",
               "label": {
-                "en": "Mid"
+                "en": "Mid", "no": "Midt"
               }
             },
             {
               "id": "RightMid",
               "label": {
-                "en": "RightMid"
+                "en": "RightMid", "no": "Høyre Midt"
               }
             },
             {
               "id": "Right",
               "label": {
-                "en": "Right"
+                "en": "Right", "no": "Høyre"
               }
             }
           ]
@@ -53,13 +56,16 @@
     {
       "id": "device-change-air-swing-updown",
       "title": {
-        "en": "Change Air Swing Up/Down"
+        "en": "Change Air Swing Up/Down",
+        "no": "Endre luftsving opp/ned"
       },
       "titleFormatted": {
-        "en": "Change Air Swing Up/Down to [[direction]]"
+        "en": "Change Air Swing Up/Down to [[direction]]",
+        "no": "Endre luftsving opp/ned til [[direction]]"
       },
       "hint": {
-        "en": "Choose air direction up/down"
+        "en": "Choose air direction up/down",
+        "no": "Velg luftsving opp/ned"
       },
       "args": [
         {
@@ -69,31 +75,31 @@
             {
               "id": "Up",
               "label": {
-                "en": "Up"
+                "en": "Up", "no": "Opp"
               }
             },
             {
               "id": "UpMid",
               "label": {
-                "en": "UpMid"
+                "en": "UpMid", "no": "Opp Midt"
               }
             },
             {
               "id": "Mid",
               "label": {
-                "en": "Mid"
+                "en": "Mid", "no": "Midt"
               }
             },
             {
               "id": "DownMid",
               "label": {
-                "en": "DownMid"
+                "en": "DownMid", "no": "Ned Midt"
               }
             },
             {
               "id": "Down",
               "label": {
-                "en": "Down"
+                "en": "Down", "no": "Ned"
               }
             }
           ]
@@ -103,13 +109,16 @@
     {
       "id": "device-change-eco-mode",
       "title": {
-        "en": "Change Eco Mode"
+        "en": "Change Eco Mode",
+        "no": "Endre ecomodus"
       },
       "titleFormatted": {
-        "en": "Change Eco Mode to [[mode]]"
+        "en": "Change Eco Mode to [[mode]]",
+        "no": "Endre ecomodus til [[mode]]"
       },
       "hint": {
-        "en": "Choose eco mode"
+        "en": "Choose eco mode",
+        "no": "Velg ecomodus"
       },
       "args": [
         {
@@ -119,19 +128,19 @@
             {
               "id": "Auto",
               "label": {
-                "en": "Auto"
+                "en": "Auto", "no": "Automatisk"
               }
             },
             {
               "id": "Powerful",
               "label": {
-                "en": "Powerful"
+                "en": "Powerful", "no": "Kraftfull"
               }
             },
             {
               "id": "Quiet",
               "label": {
-                "en": "Quiet"
+                "en": "Quiet", "no": "Stille"
               }
             }
           ]
@@ -141,13 +150,16 @@
     {
       "id": "device-change-fan-speed",
       "title": {
-        "en": "Change Fan Speed"
+        "en": "Change Fan Speed",
+        "no": "Endre viftehastighet"
       },
       "titleFormatted": {
-        "en": "Change Fan Speed to [[speed]]"
+        "en": "Change Fan Speed to [[speed]]",
+        "no": "Endre viftehastighet til [[speed]]"
       },
       "hint": {
-        "en": "Choose fan speed"
+        "en": "Choose fan speed",
+        "no": "Velg viftehastighet"
       },
       "args": [
         {
@@ -157,37 +169,37 @@
             {
               "id": "Auto",
               "label": {
-                "en": "Auto"
+                "en": "Auto", "no": "Automatisk"
               }
             },
             {
               "id": "Low",
               "label": {
-                "en": "Low"
+                "en": "Low", "no": "Lav"
               }
             },
             {
               "id": "LowMid",
               "label": {
-                "en": "LowMid"
+                "en": "LowMid", "no": "Lav Medium"
               }
             },
             {
               "id": "Mid",
               "label": {
-                "en": "Mid"
+                "en": "Mid", "no": "Medium"
               }
             },
             {
               "id": "HighMid",
               "label": {
-                "en": "HighMid"
+                "en": "HighMid", "no": "Medium Høy"
               }
             },
             {
               "id": "High",
               "label": {
-                "en": "High"
+                "en": "High", "no": "Høy"
               }
             }
           ]
@@ -197,13 +209,16 @@
     {
       "id": "device-change-operation-mode",
       "title": {
-        "en": "Change Operation Mode"
+        "en": "Change Operation Mode",
+        "no": "Endre driftsmodus"
       },
       "titleFormatted": {
-        "en": "Change Operation Mode to [[mode]]"
+        "en": "Change Operation Mode to [[mode]]",
+        "no": "Endre driftsmodus til [[mode]]"
       },
       "hint": {
-        "en": "Choose operation mode"
+        "en": "Choose operation mode",
+        "no": "Velg driftsmodus"
       },
       "args": [
         {
@@ -213,31 +228,31 @@
             {
               "id": "Auto",
               "label": {
-                "en": "Auto"
+                "en": "Auto", "no": "Automatisk"
               }
             },
             {
               "id": "Dry",
               "label": {
-                "en": "Dry"
+                "en": "Dry", "no": "Avfukting"
               }
             },
             {
               "id": "Cool",
               "label": {
-                "en": "Cool"
+                "en": "Cool", "no": "Kjøling"
               }
             },
             {
               "id": "Heat",
               "label": {
-                "en": "Heat"
+                "en": "Heat", "no": "Varme"
               }
             },
             {
               "id": "Fan",
               "label": {
-                "en": "Fan"
+                "en": "Fan", "no": "Vifte"
               }
             }
           ]

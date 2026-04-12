@@ -49,6 +49,8 @@ The log contains the user name (somewhat obfuscated) and PCC device names and ID
 
 # Changelog
 
+### 1.1.23 (2026-04-12)
+  * Added handling of the thermostat_mode capability which is a default capability for type "climate" APPs (which this is). Thermostat and operation mode now both work and are kept in sync (Jarl)
 ### 1.1.22 (2026-03-23)
   * Added per device option to block transmitting to the Panasonic API parameter values that havn't changed compared to state stored in the Homey to reduce load on the Panasonic API (Jarl)
   * Added operation mode 'when' flow card (Jarl)
