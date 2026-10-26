@@ -1,5 +1,5 @@
 import Homey from 'homey';
-import { ComfortCloudClient, TokenExpiredError } from 'panasonic-comfort-cloud-client';
+import { AppType, ComfortCloudClient, TokenExpiredError } from 'panasonic-comfort-cloud-client';
 import { MyDevice } from './device';
 import { Mutex } from 'async-mutex';
 
@@ -44,15 +44,20 @@ export class MyDriver extends Homey.Driver {
       await this.clientMutex.runExclusive(async () => {
         if (this.client === undefined)
         {
-          let appVersion = "1.21.0";
+          // The API only accepts a version together with the platform it belongs to,
+          // so the App Store version is sent as iOS. Without it, the client's
+          // built-in Android default is used.
+          let appVersion: string | undefined;
+          let appType = AppType.ANDROID;
           try {
             appVersion = await this.getLatestAppVersion();
+            appType = AppType.IOS;
           }
           catch (e) {
             this.error('pcc app version query to itunes failed', e);
           }
-          this.log('initializing client ('+appVersion+')');
-          this.client = new ComfortCloudClient(appVersion);
+          this.client = new ComfortCloudClient(appVersion, appType);
+          this.log(`initializing client (${this.client.appVersion}, ${appType === AppType.IOS ? 'iOS' : 'Android'})`);
           const username:string = this.homey.settings.get("username");
           const password:string = this.homey.settings.get("password");
           if (!username || !password)
